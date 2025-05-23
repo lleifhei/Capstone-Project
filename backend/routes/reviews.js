@@ -1,38 +1,19 @@
 const express = require('express');
+const app = express();
 const Pool = require('../db/client');
 const router = express.Router();
 
+app.use(express.json());
+
 
 // GET /reviews - Get all reviews with optional filtering
-router.get('/reviews', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const { user_id, item_id, limit = 10, offset = 0, sort = 'created_at', order = 'DESC' } = req.query;
-    
-    let query = 'SELECT * FROM reviews WHERE 1=1';
-    const params = [];
-    
-    if (user_id) {
-      query += ' AND user_id = ?';
-      params.push(user_id);
-    }
-    
-    if (item_id) {
-      query += ' AND item_id = ?';
-      params.push(item_id);
-    }
-    
-    query += ` ORDER BY ${sort} ${order} LIMIT ? OFFSET ?`;
-    params.push(parseInt(limit), parseInt(offset));
-    
-    const reviews = await Pool.query(query, params);
+     const reviews = await Pool.query('SELECT * FROM reviews');
     
     res.json({
       success: true,
-      data: reviews,
-      pagination: {
-        limit: parseInt(limit),
-        offset: parseInt(offset)
-      }
+      data: reviews.rows,
     });
   } catch (error) {
     console.error('Error fetching reviews:', error);
@@ -41,7 +22,7 @@ router.get('/reviews', async (req, res) => {
 });
 
 // GET /reviews/:id - Get a specific review by ID
-router.get('/reviews/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -59,7 +40,7 @@ router.get('/reviews/:id', async (req, res) => {
 });
 
 // GET /reviews/item/:item_id - Get all reviews for a specific item
-router.get('/reviews/item/:item_id', async (req, res) => {
+router.get('/item/:item_id', async (req, res) => {
   try {
     const { item_id } = req.params;
     const { limit = 10, offset = 0 } = req.query;
@@ -90,7 +71,7 @@ router.get('/reviews/item/:item_id', async (req, res) => {
 });
 
 // GET /reviews/user/:user_id - Get all reviews by a specific user
-router.get('/reviews/user/:user_id', async (req, res) => {
+router.get('/user/:user_id', async (req, res) => {
   try {
     const { user_id } = req.params;
     const { limit = 10, offset = 0 } = req.query;
@@ -108,7 +89,7 @@ router.get('/reviews/user/:user_id', async (req, res) => {
 });
 
 // POST /reviews - Create a new review
-router.post('/reviews', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { user_id, item_id, rating, content } = req.body;
     
@@ -159,7 +140,7 @@ router.post('/reviews', async (req, res) => {
 });
 
 // PUT /reviews/:id - Update an existing review
-router.put('/reviews/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { rating, content, user_id } = req.body;

@@ -1,6 +1,10 @@
 const express = require('express');
+const app = express();
 const Pool = require('../db/client');
 const router = express.Router();
+
+app.use(express.json());
+
 
 
 // GET /comments - Get all comments with optional filtering
