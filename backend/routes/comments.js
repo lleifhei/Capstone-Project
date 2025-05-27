@@ -25,64 +25,36 @@ router.get("/", async (req, res) => {
 // GET /comments/:id - Get a specific comment by ID
 router.get("/:id", async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
+    const comment = await Pool.query("SELECT * FROM comments WHERE id = $1", [id]);
 
-    const comment = await Pool.query("SELECT * FROM comments WHERE id = ?", [
-      id,
-    ]);
-
-    if (!comment || comment.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Comment not found" });
+    if (comment.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Comment not found" });
     }
 
-    res.json({ success: true, data: comments[0] });
+    res.json({
+      success: true,
+      data: comment.rows[0],
+    });
   } catch (error) {
     console.error("Error fetching comment:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to fetch comment" });
+    res.status(500).json({ success: false, message: "Failed to fetch comment" });
   }
 });
 
 // GET /comments/reviews/:review_id - Get all comments for a specific review
 router.get("/reviews/:review_id", async (req, res) => {
   try {
-    const { review_id } = req.body;
-    // First check if the review exists
-    const reviewExists = await Pool.query(
-      "SELECT id FROM reviews WHERE id = ?",
-      [review_id]
-    );
-
-    if (!reviewExists || reviewExists.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Review not found" });
-    }
-
-    const comments = await Pool.query(
-      "SELECT * FROM comments WHERE review_id = ?",
-      [review_id]
-    );
-
-    // Get total comment count for this review
-    const countResult = await Pool.query(
-      "SELECT COUNT(*) as total FROM comments WHERE review_id = ?",
-      [review_id]
-    );
+    const { review_id } = req.params;
+    const comments = await Pool.query("SELECT * FROM comments WHERE review_id = $1", [review_id]);
 
     res.json({
       success: true,
       data: comments.rows,
-      total_comments: countResult[0].total,
     });
   } catch (error) {
-    console.error("Error fetching review comments:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to fetch review comments" });
+    console.error("Error fetching comments for review:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch comments for review" });
   }
 });
 
@@ -90,21 +62,15 @@ router.get("/reviews/:review_id", async (req, res) => {
 router.get("/user/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
-    const comments = await Pool.query(
-      "SELECT * FROM comments WHERE user_id = ?",
-      [user_id]
-    );
+    const comments = await Pool.query("SELECT * FROM comments WHERE user_id = $1", [user_id]);
 
     res.json({
       success: true,
       data: comments.rows,
-      total_comments: countResult[0].total,
     });
   } catch (error) {
-    console.error("Error fetching user comments:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to fetch user comments" });
+    console.error("Error fetching comments by user:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch comments by user" });
   }
 });
 
@@ -112,99 +78,42 @@ router.get("/user/:user_id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { user_id, review_id, content } = req.body;
-
-    // Validation
-    if (!user_id || !review_id || !content) {
-      return res.status(400).json({
-        success: false,
-        message: "user_id, review_id, and content are required",
-      });
-    }
-
-    const newComment = await Pool.query("SELECT * FROM comments WHERE id = ?", [
-      result.insertId,
-    ]);
+    const newComment = await Pool.query(
+      "INSERT INTO comments (user_id, review_id, content) VALUES ($1, $2, $3) RETURNING *",
+      [user_id, review_id, content]
+    );
 
     res.status(201).json({
       success: true,
-      data: newComment[0],
-      message: "Comment created successfully",
+      data: newComment.rows[0],
     });
   } catch (error) {
     console.error("Error creating comment:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to create comment" });
+    res.status(500).json({ success: false, message: "Failed to create comment" });
   }
 });
 
 // PUT /comments/:id - Update an existing comment
 router.put("/:id", async (req, res) => {
   try {
-    const { id, content, user_id } = req.body;
-
-    // Check if comment exists
-    const existingComment = await Pool.query(
-      "SELECT * FROM comments WHERE id = ?",
-      [id]
-    );
-
-    if (!existingComment || existingComment.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Comment not found" });
-    }
-
-    // Check if the user owns this comment
-    if (user_id && existingComment[0].user_id !== user_id) {
-      return res.status(403).json({
-        success: false,
-        message: "Not authorized to update this comment",
-      });
-    }
-
-    // Validation
-    if (!content) {
-      return res.status(400).json({
-        success: false,
-        message: "Content is required",
-      });
-    }
-
-    if (content.trim().length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Comment content cannot be empty",
-      });
-    }
-
-    if (content.length > 1000) {
-      return res.status(400).json({
-        success: false,
-        message: "Comment content cannot exceed 1000 characters",
-      });
-    }
-
-    await Pool.query("UPDATE comments SET content = ? WHERE id = ?", [
-      content.trim(),
-      id,
-    ]);
-
+    const { id } = req.params;
+    const { content } = req.body;
     const updatedComment = await Pool.query(
-      "SELECT * FROM comments WHERE id = ?",
-      [id]
+      "UPDATE comments SET content = $1 WHERE id = $2 RETURNING *",
+      [content, id]
     );
+
+    if (updatedComment.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Comment not found" });
+    }
 
     res.json({
       success: true,
-      data: updatedComment[0],
-      message: "Comment updated successfully",
+      data: updatedComment.rows[0],
     });
   } catch (error) {
     console.error("Error updating comment:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to update comment" });
+    res.status(500).json({ success: false, message: "Failed to update comment" });
   }
 });
 
@@ -212,29 +121,11 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { user_id } = req.body; // Optional: for authorization
+    const deletedComment = await Pool.query("DELETE FROM comments WHERE id = $1 RETURNING *", [id]);
 
-    // Check if comment exists
-    const existingComment = await Pool.query(
-      "SELECT * FROM comments WHERE id = ?",
-      [id]
-    );
-
-    if (!existingComment || existingComment.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Comment not found" });
+    if (deletedComment.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Comment not found" });
     }
-
-    // Check if the user owns this comment
-    if (user_id && existingComment[0].user_id !== user_id) {
-      return res.status(403).json({
-        success: false,
-        message: "Not authorized to delete this comment",
-      });
-    }
-
-    await Pool.query("DELETE FROM comments WHERE id = ?", [id]);
 
     res.json({
       success: true,
@@ -242,9 +133,7 @@ router.delete("/:id", async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting comment:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to delete comment" });
+    res.status(500).json({ success: false, message: "Failed to delete comment" });
   }
 });
 
