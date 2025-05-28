@@ -1,4 +1,5 @@
 import React from 'react';
+import Login from '../components/Login';
 
 const Profile = () => {
     const user = {
@@ -8,14 +9,9 @@ const Profile = () => {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>Profile</h1>
-            <div style={{ marginTop: '20px' }}>
-                <p><strong>Name:</strong> {user.name}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>Bio:</strong> {user.bio}</p>
-            </div>
-        </div>
+    <>
+    <Login />
+    </>
     );
 };
 

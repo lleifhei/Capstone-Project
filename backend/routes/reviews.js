@@ -2,8 +2,7 @@ const express = require("express");
 const app = express();
 const Pool = require("../db/client");
 const router = express.Router();
-const authenticate = require("../middleware/authenticate");
-router.use(authenticate);
+
 
 app.use(express.json());
 
