@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const Pool = require("../db/client");
+const authenticate = require("../middleware/authenticate")
 const router = express.Router();
 
 
@@ -76,7 +77,7 @@ router.get("/user/:user_id", async (req, res) => {
 });
   
 // POST /reviews - Create a new review
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
     const { item_id, user_id, rating, content } = req.body;
     const newReview = await Pool.query(
@@ -95,14 +96,14 @@ router.post("/", async (req, res) => {
 });
 
 // PUT /reviews/:id - Update an existing review
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
-    const { rating, content } = req.body;
+    const { rating, content, user_id } = req.body;
 
     const updatedReview = await Pool.query(
-      "UPDATE reviews SET rating = $1, content = $2 WHERE id = $3 RETURNING *",
-      [rating, content, id]
+      "UPDATE reviews SET rating = $1, content = $2, user_id = $3 WHERE id = $4 RETURNING *",
+      [rating, content, user_id, id]
     );
 
     if (updatedReview.rows.length === 0) {
@@ -120,7 +121,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE /reviews/:id - Delete a review
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const deletedReview = await Pool.query("DELETE FROM reviews WHERE id = $1 RETURNING *", [id]);

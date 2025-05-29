@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const Pool = require("../db/client");
+const authenticate = require("../middleware/authenticate")
 const router = express.Router();
 
 app.use(express.json());
@@ -75,7 +76,7 @@ router.get("/user/:user_id", async (req, res) => {
 });
 
 // POST /comments - Create a new comment
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
     const { user_id, review_id, content } = req.body;
     const newComment = await Pool.query(
