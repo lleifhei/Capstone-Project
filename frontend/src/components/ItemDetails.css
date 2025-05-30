@@ -1,0 +1,55 @@
+.album-detail {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .album-detail h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .album-detail img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto 1rem auto;
+    border-radius: 10px;
+  }
+  
+  .album-detail p {
+    font-size: 1rem;
+    margin: 0.4rem 0;
+  }
+  
+  .review {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .review p {
+    margin: 0.5rem 0;
+  }
+  
+  .review h4 {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .comment {
+    padding: 0.5rem 1rem;
+    margin: 0.4rem 0;
+    border-left: 3px solid #999;
+    background-color: #fafafa;
+    border-radius: 5px;
+    font-size: 0.95rem;
+  }
+  

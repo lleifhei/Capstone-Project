@@ -43,6 +43,16 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/items/:itemId", async(req, res) => {
+  try{
+    const { itemId } = req.params;
+    const comments = await Pool.query('SELECT * FROM comments WHERE item_id = $1', [itemId])
+    res.json(comments.rows)
+  }catch(error){
+    res.status(500).json({ success: false, message: "Failed to fetch comments for review" });
+  }
+})
+
 // GET /comments/reviews/:review_id - Get all comments for a specific review
 router.get("/reviews/:review_id", async (req, res) => {
   try {

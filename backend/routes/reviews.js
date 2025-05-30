@@ -48,12 +48,9 @@ router.get("/:id", async (req, res) => {
 router.get("/item/:item_id", async (req, res) => {
   try {
     const { item_id } = req.params;
+    console.log("Item id ", item_id)
     const reviews = await Pool.query("SELECT * FROM reviews WHERE item_id = $1", [item_id]);
-
-    res.json({
-      success: true,
-      data: reviews.rows,
-    });
+    res.json(reviews.rows)
   } catch (error) {
     console.error("Error fetching reviews for item:", error);
     res.status(500).json({ success: false, message: "Failed to fetch reviews for item" });
