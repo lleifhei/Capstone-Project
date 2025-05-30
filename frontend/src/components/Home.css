@@ -1,7 +1,10 @@
 .album-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
-  }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 2rem;
+  justify-content: center; 
+  max-width: 1500px;
+  margin: 0 auto; 
+  padding: 2rem;
+}
   

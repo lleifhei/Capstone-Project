@@ -1,29 +1,33 @@
 .album-card {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 1rem;
-    max-width: 250px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
     background-color: white;
-  }
+    border-bottom: 1px solid black;
+    box-shadow: none;
+    font-family: 'Helvetica Neue', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
   
-  .album-card:hover {
-    transform: scale(1.03);
-  }
-  
-  .album-card img {
-    width: 100%;
-    border-radius: 8px;
-  }
-  
-  .album-card h3 {
-    margin: 0.5rem 0 0.25rem;
-    font-size: 1.1rem;
-  }
-  
-  .album-card p {
-    color: #666;
-    font-size: 0.9rem;
-  }
+.album-card:hover {
+  transform: scale(1.02);
+}
+.album-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.album-card h3 {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0.25rem 0;
+}
+
+.album-card p {
+  font-size: 0.95rem;
+  margin: 0.15rem 0;
+  color: #333;
+}
   
