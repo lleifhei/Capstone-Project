@@ -5,6 +5,7 @@ const setup = async () => {
   try {
     console.log('Dropping tables...');
     await pool.query(`
+      DROP TABLE IF EXISTS tracks;
       DROP TABLE IF EXISTS comments;
       DROP TABLE IF EXISTS reviews;
       DROP TABLE IF EXISTS items;
@@ -25,9 +26,13 @@ const setup = async () => {
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         artist VARCHAR(255),
+        artist_id VARCHAR(50),
+        artist_image_url TEXT,
         spotify_id VARCHAR(50),
         image_url TEXT,
-        category VARCHAR(100) NOT NULL,
+        type VARCHAR(100),
+        total_tracks INT,
+        release_date VARCHAR(100),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
@@ -47,6 +52,16 @@ const setup = async () => {
         review_id INTEGER REFERENCES reviews(id) ON DELETE CASCADE,
         item_id INTEGER REFERENCES items(id) ON DELETE CASCADE,
         content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE tracks(
+        id SERIAL PRIMARY KEY,
+        item_id INTEGER REFERENCES items(id) ON DELETE CASCADE,
+        track_number INTEGER NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        preview_url TEXT,
+        duration INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);

@@ -5,7 +5,6 @@
     height: 100%;
     background-color: white;
     border-bottom: 1px solid black;
-    box-shadow: none;
     font-family: 'Helvetica Neue', sans-serif;
     cursor: pointer;
     transition: transform 0.2s ease;
@@ -19,15 +18,19 @@
   border-radius: 8px;
 }
 
+.album-card-details{
+  padding-left: 3%;
+}
+
 .album-card h3 {
   font-weight: bold;
   font-size: 1.2rem;
   margin: 0.25rem 0;
+  color: black;
 }
 
 .album-card p {
   font-size: 0.95rem;
   margin: 0.15rem 0;
-  color: #333;
+  color: black;
 }
-  

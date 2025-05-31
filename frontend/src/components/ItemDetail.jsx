@@ -17,30 +17,36 @@ const ItemDetail = () => {
     if (!album) return <p>Loading...</p>
     return (
         <>
-            <div className="album-detail">
-                <h1>{album.name}</h1>
-                <img src={album.image_url} alt={album.name} />
-                <p><strong>Artist:</strong> {album.artist}</p>
-                <p><strong>Category:</strong> {album.category}</p>
-                <p><strong>Release Date:</strong> {album.release_date}</p>
-
-                <h2>Reviews</h2>
-                {reviews.length ? (
-                    reviews.map(review => (
-                        <div key={review.id} className="review">
-                            <p><strong>Rating:</strong> {review.rating}</p>
-                            <p>{review.content}</p>
-                            <h4>Comments</h4>
-                            {(comments || []).map(comment => {
-                                <div key={comment.id} className="comment">
-                                    <p>{comment.content}</p>
-                                </div>
-                            })}
+            <div className="album-header-section">
+                    <div className="album-banner-bg">
+                        <img src={album.artist_image_url} alt={album.title} />
+                    </div>
+                    <div className="album-header-content">
+                        <div className="album-left">
+                            <img className="album-art" src={album.image_url} alt={album.title} />
+                            <div className="album-info">
+                                <h1>{album.title}</h1>
+                                <p className="album-meta">
+                                {album.type} • {album.release_date} • {album.total_tracks || "??"} Tracks
+                                </p>
+                                <p className="album-artist">By {album.artist}</p>
+                            </div>
                         </div>
-                    ))
-                ): (
-                    <p>No reviews yet.</p>
-                )}
+                        <div className="album-ratings">
+                            <div>
+                                <p className="label">Total Ratings</p>
+                                <p className="value">{album.total_ratings || 0}</p>
+                            </div>
+                            <div>
+                                <p className="label">Average Rating</p>
+                                <p className="value">⭐ {album.avg_rating?.toFixed(1) || "0.0"} / 5</p>
+                            </div>
+                            <div>
+                                <p className="label">Your Rating</p>
+                                {/* <p className="value">☆ {userRating || 0} / 5</p> */}
+                            </div>
+                        </div>
+                    </div>
             </div>
         </>
     );

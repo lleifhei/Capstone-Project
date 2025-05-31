@@ -48,7 +48,6 @@ router.get("/:id", async (req, res) => {
 router.get("/item/:item_id", async (req, res) => {
   try {
     const { item_id } = req.params;
-    console.log("Item id ", item_id)
     const reviews = await Pool.query("SELECT * FROM reviews WHERE item_id = $1", [item_id]);
     res.json(reviews.rows)
   } catch (error) {

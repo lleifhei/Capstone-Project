@@ -8,9 +8,15 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET
 
 router.get('/', async(req, res) => {
+    const { type } = req.query;
     try{
-        const results = await pool.query('SELECT * FROM items');
-        res.json(results.rows)
+        if(type && type !== "all"){
+            const results = await pool.query('SELECT * FROM items WHERE type = $1', [type])
+            res.json(results.rows)
+        }else{
+            const results = await pool.query('SELECT * FROM items')
+            res.json(results.rows)
+        }
     }catch(err){
         res.status(500).json({error: "Failed to fetch items"})
     }

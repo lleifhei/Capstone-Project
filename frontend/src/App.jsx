@@ -5,11 +5,13 @@ import Profile from "./routes/Profile";
 import ReviewDetail from "./routes/ReviewDetail";
 import Reviews from "./routes/Reviews";
 import NewReview from "./routes/NewReview";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+        <Navbar/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/items/:id" element={<ItemDetail />}/>

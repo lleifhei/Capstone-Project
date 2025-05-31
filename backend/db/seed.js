@@ -1,7 +1,7 @@
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const pool = require('./client');
-const { fetchTopAlbums } = require('../services/spotify');
+const { fetchTopAlbums, fetchTracksForAlbum, fetchArtistImage } = require('../services/spotify');
 
 const seed = async () => {
   try {
@@ -20,11 +20,22 @@ const seed = async () => {
 
     const albums = await fetchTopAlbums();
     for (const album of albums) {
-    await pool.query(
-        `INSERT INTO items (title, artist, spotify_id, image_url, category)
-        VALUES ($1, $2, $3, $4, $5)`,
-        [album.title, album.artist, album.spotify_id, album.image_url, album.category]
-    );
+      const artistImageUrl = await fetchArtistImage(album.artist_id)
+      const results = await pool.query(
+          `INSERT INTO items (title, artist, artist_id, artist_image_url, spotify_id, image_url, type, total_tracks, release_date)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+          [album.title, album.artist, album.artist_id, artistImageUrl, album.spotify_id, album.image_url, album.type, album.total_tracks, album.release_date]
+      );
+      const itemId = results.rows[0].id
+
+      const tracks = await fetchTracksForAlbum(album.spotify_id)
+      for(const track of tracks){
+        await pool.query(
+          `INSERT INTO tracks (item_id, track_number, name, preview_url, duration)
+          VALUES ($1, $2, $3, $4, $5)`,
+          [itemId, track.track_number, track.name, track.preview_url, track.duration]
+        )
+      }
     }
     console.log('Spotify albums seeded into items table');
 

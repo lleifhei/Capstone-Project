@@ -1,55 +1,84 @@
-.album-detail {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: #ffffff;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .album-detail h1 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .album-detail img {
-    display: block;
-    max-width: 100%;
-    margin: 0 auto 1rem auto;
-    border-radius: 10px;
-  }
-  
-  .album-detail p {
-    font-size: 1rem;
-    margin: 0.4rem 0;
-  }
-  
-  .review {
-    margin-top: 2rem;
-    padding: 1rem;
-    border-top: 1px solid #ddd;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-  }
-  
-  .review p {
-    margin: 0.5rem 0;
-  }
-  
-  .review h4 {
-    margin-top: 1rem;
-    font-size: 1.1rem;
-    color: #333;
-  }
-  
-  .comment {
-    padding: 0.5rem 1rem;
-    margin: 0.4rem 0;
-    border-left: 3px solid #999;
-    background-color: #fafafa;
-    border-radius: 5px;
-    font-size: 0.95rem;
-  }
-  
+.album-header-section {
+  position: relative;
+  background: rgb(26, 20, 20);
+  overflow: hidden;
+}
+
+.album-banner-bg {
+  position: relative;
+  height: 750px;
+  overflow: hidden;
+}
+
+.album-banner-bg img {
+  padding-left: 10%;
+  width: 90%;
+  object-fit: cover;
+  filter: brightness(0.5);
+  display: block;
+  margin-top: -100px;
+}
+
+.album-header-content {
+  position: relative;
+  margin-top: -400px; 
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-top: -30%;
+  padding-bottom: 2%;
+  color: white;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) 100%);
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.album-left {
+  display: flex;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.album-art {
+  width: 300px;
+  border-radius: 10px;
+}
+
+.album-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.album-meta {
+  color: #666;
+  margin-top: 5%;
+}
+
+.album-artist {
+  font-weight: bold;
+  margin-top: 5%;
+}
+
+.album-ratings {
+  min-width: 200px;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  gap: 1rem;
+  text-align: center;
+}
+
+.album-ratings .label {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.album-ratings .value {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
