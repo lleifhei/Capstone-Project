@@ -6,11 +6,28 @@ const NewReview = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log({ review, rating });
-        setReview('');
-        setRating(0);
-    };
+        fetch('/api/reviews', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ review, rating }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to submit review');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Review submitted successfully:', data);
+                setReview('');
+                setRating(0);
+                    })
+                    .catch((error) => {
+                        console.error('Error submitting review:', error);
+                    });
+            };
 
     return (
         <div>
