@@ -2,6 +2,29 @@ import { React } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      navigate("/profile");
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
+  };
 
 
   return (
@@ -37,10 +60,7 @@ const Login = () => {
         </div>
       </form>
   
-      <p className="mt-10 text-center text-sm/6 text-gray-500">
-        Not a member?
-        <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">Start a 14 day free trial</a>
-      </p>
+     
     </div>
   </div>
     );
