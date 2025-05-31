@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import ItemDetail from "./components/ItemDetail";
-import Profile from "./routes/Profile";
-import ReviewDetail from "./routes/ReviewDetail";
-import Reviews from "./routes/Reviews";
-import NewReview from "./routes/NewReview";
+import Profile from "./components/Profile";
+import ReviewDetail from "./components/ReviewDetail";
+import Reviews from "./components/Reviews";
+import NewReview from "./components/NewReview";
 import Navbar from "./components/Navbar";
 
 function App() {
