@@ -1,66 +1,167 @@
 .review-section-container {
-    padding: 4rem;
-    padding-top: 20px;
-    margin: 0 auto;
-    max-width: 1200px;
-    font-family: 'Helvetica Neue', sans-serif;
-    background-color: white;
-    color: black;
-  }
-  
-  .review-section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-  
-  .review-section-header h2 {
-    font-size: 1.5rem;
-    margin: 0;
-  }
-  
-  .write-review-button {
-    background-color: black;
-    color: white;
-    border: none;
-    padding: 0.5rem 1.25rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-  
-  .reviews-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .review-card {
-    background-color: #f5f5f5;
-    padding: 1rem;
-    border-radius: 8px;
-  }
-  
-  .review-meta {
-    font-size: 0.9rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-  }
-  
-  .review-content {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .review-comments {
-    border-top: 1px solid #ccc;
-    padding-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #666;
-  }
-  
-  .comment {
-    margin-top: 0.25rem;
-  }
-  
+  padding: 4rem;
+  padding-top: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: white;
+  color: black;
+}
+
+.review-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.review-section-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.write-review-button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-card {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.review-meta {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.review-content {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.review-comments {
+  border-top: 1px solid #ccc;
+  padding-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.comment {
+  margin-top: 0.25rem;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1.5rem;
+}
+
+.modal-content label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #333;
+}
+
+.modal-content input[type="number"],
+.modal-content textarea {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.modal-content input[type="number"]:focus,
+.modal-content textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.modal-content textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-buttons button {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-buttons button:hover {
+  background-color: #333;
+}
+
+.modal-buttons button.cancel {
+  background-color: #ccc;
+  color: #222;
+}
+
+.modal-buttons button.cancel:hover {
+  background-color: #bbb;
+}
+
+.no-reviews {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  border-radius: 8px;
+}

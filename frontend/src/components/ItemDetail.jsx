@@ -48,8 +48,10 @@ const ItemDetail = () => {
                     </div>
                 </div>
             </div>
-            {tracks.length !== 1 && <TrackList tracks={tracks}/>}
-            <Review reviews={reviews}/>
+            <div className="tracks-reviews-container">
+                {tracks.length !== 1 && <TrackList tracks={tracks}/>}
+                <Review reviews={reviews} album={album}/>
+            </div>
         </>
     );
   };
