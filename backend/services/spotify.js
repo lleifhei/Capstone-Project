@@ -68,8 +68,8 @@ async function fetchTracksForAlbum(albumId) {
   );
   return response.data.items.map(track => ({
     name: track.name,
-    preview_url: track.preview_url,
     track_number: track.track_number,
+    artist: track.artists.map(a => a.name).join(', '),
     duration: track.duration_ms
   }));
 }

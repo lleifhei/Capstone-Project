@@ -35,6 +35,19 @@ router.get('/:itemId', async(req, res) => {
     }
 })
 
+router.get('/:itemId/tracks', async(req, res) => {
+    const {itemId} = req.params;
+    try{
+        const results = await pool.query('SELECT * FROM tracks WHERE item_id = $1',[itemId]);
+        if(results.rows.length === 0){
+            return res.status(404).json({error: "Tracks not found"})
+        }
+        res.json(results.rows)
+    }catch(err){
+        res.status(500).json({error: "Failed to fetch tracks"})
+    }
+})
+
 router.get('/search/q', async(req, res) => {
     const { q } = req.query;
     console.log("Here: ", q)

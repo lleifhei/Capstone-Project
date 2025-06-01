@@ -9,11 +9,11 @@ const seed = async () => {
 
     const passwordHash = await bcrypt.hash('password123', 10);
     const userRes = await pool.query(`
-      INSERT INTO users (email, password, role)
+      INSERT INTO users (username, email, password, role)
       VALUES
-        ('user1@example.com', $1, 'user'),
-        ('user2@example.com', $1, 'user'),
-        ('admin@example.com', $1, 'admin')
+        ('user1', 'user1@example.com', $1, 'user'),
+        ('user2', 'user2@example.com', $1, 'user'),
+        ('admin1', 'admin1@example.com', $1, 'admin')
       RETURNING *;
     `, [passwordHash]);
     console.log('Users created');
@@ -31,9 +31,9 @@ const seed = async () => {
       const tracks = await fetchTracksForAlbum(album.spotify_id)
       for(const track of tracks){
         await pool.query(
-          `INSERT INTO tracks (item_id, track_number, name, preview_url, duration)
+          `INSERT INTO tracks (item_id, track_number, name, duration, artist)
           VALUES ($1, $2, $3, $4, $5)`,
-          [itemId, track.track_number, track.name, track.preview_url, track.duration]
+          [itemId, track.track_number, track.name, track.duration, track.artist]
         )
       }
     }

@@ -58,11 +58,7 @@ router.get("/reviews/:review_id", async (req, res) => {
   try {
     const { review_id } = req.params;
     const comments = await Pool.query("SELECT * FROM comments WHERE review_id = $1", [review_id]);
-
-    res.json({
-      success: true,
-      data: comments.rows,
-    });
+    res.json(comments.rows)
   } catch (error) {
     console.error("Error fetching comments for review:", error);
     res.status(500).json({ success: false, message: "Failed to fetch comments for review" });

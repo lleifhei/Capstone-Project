@@ -16,6 +16,8 @@ const setup = async () => {
     await pool.query(`
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        profile_image_url TEXT DEFAULT 'https://www.gravatar.com/avatar/?d=mp',
         email VARCHAR(255) UNIQUE NOT NULL,
         password TEXT NOT NULL,
         role VARCHAR(10) DEFAULT 'user',
@@ -60,8 +62,8 @@ const setup = async () => {
         item_id INTEGER REFERENCES items(id) ON DELETE CASCADE,
         track_number INTEGER NOT NULL,
         name VARCHAR(255) NOT NULL,
-        preview_url TEXT,
         duration INTEGER,
+        artist VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);

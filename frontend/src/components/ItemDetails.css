@@ -2,6 +2,14 @@
   position: relative;
   background: rgb(26, 20, 20);
   overflow: hidden;
+  height: 650px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem;
+  box-sizing: border-box;
 }
 
 .album-banner-bg {
@@ -11,26 +19,23 @@
 }
 
 .album-banner-bg img {
-  padding-left: 10%;
-  width: 90%;
+  width: 100%;
+  height: auto;
   object-fit: cover;
   filter: brightness(0.5);
   display: block;
-  margin-top: -100px;
+  margin-top: -200px;
 }
 
 .album-header-content {
   position: relative;
-  margin-top: -400px; 
+  margin-top: -45%;
   display: flex;
   justify-content: space-between;
   gap: 2rem;
-  padding-left: 10%;
-  padding-right: 10%;
-  margin-top: -30%;
   padding-bottom: 2%;
   color: white;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 100%);
   z-index: 1;
   border-radius: 10px;
 }
@@ -53,7 +58,7 @@
 }
 
 .album-meta {
-  color: #666;
+  color: white;
   margin-top: 5%;
 }
 
@@ -75,7 +80,7 @@
 
 .album-ratings .label {
   font-size: 0.85rem;
-  color: #777;
+  color: white;
 }
 
 .album-ratings .value {
