@@ -7,7 +7,7 @@ import Reviews from "./components/Reviews";
 import NewReview from "./components/NewReview";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
-
+import SignUp from "./components/SignUp";
 function App() {
   return (
     <>
@@ -15,6 +15,7 @@ function App() {
         <Navbar/>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login/>}/>
           <Route path="/items/:id" element={<ItemDetail />}/>
           <Route path="/profile" element={<Profile />} />
