@@ -1,7 +1,7 @@
 import './Navbar.css';
 import { FaBars, FaSearch } from 'react-icons/fa';
 
-const Navbar = () => {
+const Navbar = ({ token }) => {
   return (
     <header className="navbar">
       <div className="navbar-top">
@@ -14,8 +14,16 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-right">
-          <a href="#">LOG IN</a>
-          <a href="#">SIGN IN</a>
+        {token ? (
+            <div>
+              <a href="/profile">Profile</a>
+            </div>
+        ) : (
+          <div>
+            <a href="/login">Log In</a>
+            <a href="/register">Sign In</a>
+        </div>
+        )}
         </div>
       </div>
     </header>

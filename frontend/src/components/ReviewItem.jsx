@@ -3,7 +3,7 @@ import axios from 'axios';
 import './ReviewItem.css'
 import { useState, useEffect } from 'react';
 
-const ReviewItem = ({ review }) => {
+const ReviewItem = ({ review, token, album }) => {
     const [ user, setUser] = useState([]);
     const [commentContent, setCommentContent] = useState('');
     const [error, setError] = useState('');
@@ -19,15 +19,17 @@ const ReviewItem = ({ review }) => {
             setError('Comment cannot be empty');
             return;
           }
-    
-          // Replace userId with actual logged-in user if needed
-          const newComment = {
+          console.log("Here")
+          await axios.post('http://localhost:3000/api/comments', {
             review_id: review.id,
-            user_id: 1, // Replace with actual user ID from auth
-            content: commentContent,
-          };
-    
-          await axios.post(`http://localhost:3000/api/comments`, newComment);
+            item_id: album.id,
+            content: commentContent
+          },
+          {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          })
           setCommentContent('');
           setError('');
         } catch (err) {

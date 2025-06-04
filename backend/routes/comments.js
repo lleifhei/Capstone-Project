@@ -65,6 +65,16 @@ router.get("/reviews/:review_id", async (req, res) => {
   }
 });
 
+router.get('/items/:item_id', async(req, res) => {
+  try{
+    const { item_id } = req.params;
+    const comments = await Pool.query("SELECT * FROM comments WHERE item_id = $1", item_id);
+    res.json(comments.rows)
+  }catch(err){
+    res.status(500).json({error: err})
+  }
+})
+
 // GET /comments/user/:user_id - Get all comments by a specific user
 router.get("/user/:user_id", async (req, res) => {
   try {
@@ -84,16 +94,13 @@ router.get("/user/:user_id", async (req, res) => {
 // POST /comments - Create a new comment
 router.post("/", authenticate, async (req, res) => {
   try {
-    const { user_id, review_id, content } = req.body;
+    const { review_id, item_id, content } = req.body;
+    const user_id = req.user.id;
     const newComment = await Pool.query(
-      "INSERT INTO comments (user_id, review_id, content) VALUES ($1, $2, $3) RETURNING *",
-      [user_id, review_id, content]
+      "INSERT INTO comments (user_id, review_id, item_id, content) VALUES ($1, $2, $3, $4) RETURNING *",
+      [user_id, review_id, item_id, content]
     );
-
-    res.status(201).json({
-      success: true,
-      data: newComment.rows[0],
-    });
+    res.status(201).json(newComment.rows[0]);
   } catch (error) {
     console.error("Error creating comment:", error);
     res.status(500).json({ success: false, message: "Failed to create comment" });
