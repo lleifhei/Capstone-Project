@@ -6,6 +6,7 @@ import ReviewDetail from "./components/ReviewDetail";
 import Reviews from "./components/Reviews";
 import NewReview from "./components/NewReview";
 import Navbar from "./components/Navbar";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Navbar/>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login/>}/>
           <Route path="/items/:id" element={<ItemDetail />}/>
           <Route path="/profile" element={<Profile />} />
           <Route path="/reviews" element={<Reviews />} />

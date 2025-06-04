@@ -1,45 +1,21 @@
-import { React } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const loginUser = async ({ email, password }) => {
-    fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Login failed");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Login successful:", data);
-        localStorage.setItem("token", data.token);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("Login error:", error);
-      });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // Assuming you have a loginUser function that handles the API call
-      const response = await loginUser({ email, password });
-      if (response.success) {
-        // Redirect to home or dashboard after successful login
-        navigate("/");
-      } else {
-        alert("Login failed. Please check your credentials.");
-      }
+      const response = await axios.post('http://localhost:3000/api/auth/login', {
+        email,
+        password
+      })
+      localStorage.setItem('token', response.data.token)
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
       alert("An error occurred while logging in.");
@@ -60,7 +36,7 @@ const Login = () => {
         <div>
           <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">Email address</label>
           <div className="mt-2">
-            <input type="email" name="email" id="email" autoComplete="email" required className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+            <input type="email" name="email" id="email" autoComplete="email" required className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" onChange={(e) => setEmail(e.target.value)} />
           </div>
         </div>
   
@@ -70,7 +46,7 @@ const Login = () => {
             
           </div>
           <div className="mt-2">
-            <input type="password" name="password" id="password" autoComplete="current-password" required className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+            <input type="password" name="password" id="password" autoComplete="current-password" required className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" onChange={(e) => setPassword(e.target.value)}/>
           </div>
         </div>
   

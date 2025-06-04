@@ -8,12 +8,12 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET
 
 router.post('/register', async(req, res) => {
-    const {email, password, role = 'user'} = req.body;
+    const {username, email, password, role = 'user'} = req.body;
     try{
         const hash = await bcrypt.hash(password, 10);
-        const result = await pool.query('INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING id, email, role', [email, hash, role]);
+        const result = await pool.query('INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, username, email, role', [username, email, hash, role]);
         const user = result.rows[0]
-        const token = jwt.sign({id: user.id, email: user.email, role: user.role}, JWT_SECRET, {expiresIn: '1h'})
+        const token = jwt.sign({id: user.id, username: user.username, email: user.email, role: user.role}, JWT_SECRET, {expiresIn: '1h'})
         res.status(201).json({ token });
     }catch(err){
         res.status(500).json({error: "Server Error"})
