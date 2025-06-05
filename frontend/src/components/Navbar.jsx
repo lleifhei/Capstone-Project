@@ -2,13 +2,15 @@ import React from "react";
 import "./Navbar.css";
 import { FaBars, FaSearch } from "react-icons/fa";
 
-const Navbar = () => {
+const Navbar = ({ token }) => {
   const navigateToLogin = () => {
     window.location.href = "/login";
   };
-const navigateToHome = () => {
+  
+  const navigateToHome = () => {
     window.location.href = "/";
-  }
+  };
+
   return (
     <header className="navbar">
       <div className="navbar-top">
@@ -21,7 +23,16 @@ const navigateToHome = () => {
           <h1 className="logo">Sound Judgment</h1>
         </div>
         <div className="navbar-right">
-          <button onClick={navigateToLogin}>MY PROFILE/LOGIN</button>
+          {token ? (
+            <div>
+              <a href="/profile">Profile</a>
+            </div>
+          ) : (
+            <div>
+              <a href="/login">Log In</a>
+              <a href="/register">Sign Up</a>
+            </div>
+          )}
         </div>
       </div>
     </header>
