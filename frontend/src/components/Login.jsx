@@ -4,6 +4,7 @@ import axios from "axios";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -23,7 +24,7 @@ const Login = () => {
       console.log("Login successful:", response.data);
     } catch (error) {
       console.error("Login error:", error);
-      alert("An error occurred while logging in.");
+      setError("Incorrect Email or Password.")
     }
   };
 
@@ -58,6 +59,7 @@ const Login = () => {
         <div>
           <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
         </div>
+        {error && <p className="comment-error">{error}</p>}
       </form>
   
      
