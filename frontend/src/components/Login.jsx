@@ -15,7 +15,13 @@ const Login = () => {
         password
       })
       localStorage.setItem('token', response.data.token)
-      navigate("/");
+      navigate("/profile", {
+        state: { user_id: response.data.user_id }
+      });
+      // Optionally, you can also store user_id in localStorage
+      localStorage.setItem('user_id', response.data.user_id);
+      console.log("Login successful:", response.data);
+      alert("Login successful!");
     } catch (error) {
       console.error("Login error:", error);
       alert("An error occurred while logging in.");

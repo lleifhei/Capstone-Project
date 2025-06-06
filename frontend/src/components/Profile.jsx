@@ -1,8 +1,8 @@
-import { React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Profile.css";
 import axios from "axios";
 import { Navigate, useParams } from "react-router-dom";
-import "./Review.css"
+import "./Review.css";
 
 
 const Profile = () => {
@@ -30,7 +30,12 @@ const Profile = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUser(response.data);
+        setUser(response.data.rows[0] || {});
+        if (response.data.rows.length === 0) {
+          console.log("No user found with this ID.");
+        } else {
+          console.log("Fetched user data:", response.data.rows[0]);
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

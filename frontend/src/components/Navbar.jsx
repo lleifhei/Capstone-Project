@@ -16,7 +16,7 @@ const Navbar = ({ token }) => {
       <div className="navbar-top">
         <div className="navbar-left">
           <button onClick={navigateToHome} className="menu-button">
-            <FaBars className="Home"/>
+            <FaBars className="Home"/>Home
           </button>
         </div>
         <div className="navbar-center">
