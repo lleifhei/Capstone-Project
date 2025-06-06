@@ -29,8 +29,7 @@ const Navbar = ({ token }) => {
             </div>
           ) : (
             <div>
-              <a href="/login">Log In</a>
-              <a href="/register">Sign Up</a>
+              <a href="/login">Login</a>
             </div>
           )}
         </div>
