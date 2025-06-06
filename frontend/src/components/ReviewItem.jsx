@@ -6,11 +6,23 @@ import { useState, useEffect } from 'react';
 const ReviewItem = ({ review, token, album }) => {
     const [ user, setUser] = useState([]);
     const [commentContent, setCommentContent] = useState('');
+    const [comments, setComments] = useState([]);
     const [error, setError] = useState('');
     useEffect(() => {
         if (!review?.user_id) return;
         axios.get(`http://localhost:3000/api/auth/${review.user_id}`).then(res => setUser(res.data[0])).catch(err => console.error(`Error fetching user for ${review.user_id}`, err))
     }, [review.user_id])
+    const fetchComments = async () => {
+      try{
+        const res = await axios.get(`http://localhost:3000/api/comments/reviews/${review.id}`)
+        setComments(res.data);
+      }catch (err){
+        console.error("Failed to fetch comments", err)
+      }
+    }
+    useEffect(() => {
+      fetchComments();
+    }, [review.id])
     const handleSubmitComment = async (e) => {
         e.preventDefault();
     
@@ -19,7 +31,6 @@ const ReviewItem = ({ review, token, album }) => {
             setError('Comment cannot be empty');
             return;
           }
-          console.log("Here")
           await axios.post('http://localhost:3000/api/comments', {
             review_id: review.id,
             item_id: album.id,
@@ -32,9 +43,10 @@ const ReviewItem = ({ review, token, album }) => {
           })
           setCommentContent('');
           setError('');
+          await fetchComments();
         } catch (err) {
           console.error('Failed to post comment', err);
-          setError('Failed to post comment');
+          setError('You must be logged in to write a comment.');
         }
       };
     return (
@@ -52,7 +64,7 @@ const ReviewItem = ({ review, token, album }) => {
             <p className="review-rating-bottom">⭐ {review.rating} / 5</p>
             <p className="review-content">{review.content}</p>
             <div className="review-comments">
-            <Comment review={review} />
+            <Comment comments={comments}/>
             </div>
             <form onSubmit={handleSubmitComment} className="comment-form">
                 <textarea
