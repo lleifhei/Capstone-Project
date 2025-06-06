@@ -30,7 +30,7 @@ const Navbar = ({ token }) => {
           ) : (
             <div>
               <a href="/login">Log In</a>
-              <a href="/register">Sign Up</a>
+              <a href="/signup">Sign Up</a>
             </div>
           )}
         </div>
