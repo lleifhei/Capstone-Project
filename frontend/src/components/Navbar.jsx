@@ -15,12 +15,12 @@ const Navbar = ({ token }) => {
     <header className="navbar">
       <div className="navbar-top">
         <div className="navbar-left">
-          <button onClick={navigateToHome} className="menu-button">
-            <FaBars className="Home"/>Home
+          <button className="menu-button">
+            <FaBars />
           </button>
         </div>
         <div className="navbar-center">
-          <h1 className="logo">Sound Judgment</h1>
+          <button onClick={navigateToHome} className="logo">Sound Judgment</button>
         </div>
         <div className="navbar-right">
           {token ? (
