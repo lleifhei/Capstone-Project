@@ -7,6 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const Login = () => {
       localStorage.setItem('token', response.data.token)
       navigate("/");
     } catch (error) {
-      console.error("Login error:", error);
+      setError("An error occurred while logging in.");
       alert("An error occurred while logging in.");
     }
   };
@@ -92,7 +93,7 @@ const Login = () => {
             />
           </div>
           <button type="submit">Login</button>
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="comment-error">{error}</p>}
         </form>
         <div className="login-links">
           <p className="signup-link">
