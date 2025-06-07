@@ -131,11 +131,7 @@ router.put("/:id", async (req, res) => {
     if (updatedComment.rows.length === 0) {
       return res.status(404).json({ success: false, message: "Comment not found" });
     }
-
-    res.json({
-      success: true,
-      data: updatedComment.rows[0],
-    });
+    res.json(updatedComment.rows[0])
   } catch (error) {
     console.error("Error updating comment:", error);
     res.status(500).json({ success: false, message: "Failed to update comment" });

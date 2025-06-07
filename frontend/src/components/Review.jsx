@@ -121,7 +121,7 @@ const Review = ({ reviews, album, token, fetchReviews }) => {
         <div className="reviews-list">
         {reviews.length ? (
             reviews.slice().reverse().map(review => (
-                <ReviewItem review={review} token={token} album={album}/>
+                <ReviewItem review={review} token={token} album={album} fetchReviews={fetchReviews}/>
             ))
         ) : (
             <div className="no-reviews">

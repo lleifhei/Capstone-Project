@@ -5,13 +5,24 @@ import Profile from "./components/Profile";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import {jwtDecode} from "jwt-decode";
 import { useState, useEffect } from "react";
 function App() {
   const [token, setToken] = useState(null)
   useEffect(() => {
-    const store = localStorage.getItem('token');
-    if (store) setToken(store)
-  })
+    const stored = localStorage.getItem('token');
+    if (stored) {
+      const decoded = jwtDecode(stored);
+      const now = Date.now() / 1000; 
+      if (decoded.exp && decoded.exp < now) {
+        localStorage.removeItem('token');
+        setToken(null);
+      } else {
+        setToken(stored);
+      }
+    }
+  }, []);
+
   return (
     <>
       <BrowserRouter>
