@@ -33,15 +33,20 @@ const Profile = () => {
         else if (tab === 'comments') res = await axios.get('http://localhost:3000/api/auth');
         else if (tab === 'users') res = await axios.get('http://localhost:3000/api/auth');
       }else{
-        if (tab === 'reviews') res = await axios.get(`http://localhost:3000/api/reviews/${user.id}`);
-        else if (tab === 'comments') res = await axios.get(`http://localhost:3000/api/comments/${user.id}`);
+        if (tab === 'reviews') res = await axios.get(`http://localhost:3000/api/reviews/user/${decoded.id}`);
+        else if (tab === 'comments') res = await axios.get(`http://localhost:3000/api/comments/user/${decoded.id}`);
       }
-
       setData(res.data);
     } catch (err) {
       console.error(`Error loading ${tab}:`, err);
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_id'); 
+    window.location.href = '/login'; 
+  };  
 
   const adminTabs = ['music', 'reviews', 'users'];
   const userTabs = ['reviews', 'comments'];
@@ -52,9 +57,17 @@ const Profile = () => {
     <div className="profile-container">
       {user && (
         <div className="user-info">
-          <h1>{user.username}'s Profile</h1>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Role:</strong> {user.role}</p>
+          <img
+            className="user-profile-pic"
+            src={user.image}
+            alt={`${user.username}'s profile`}
+          />
+          <div className="user-details">
+            <h1>{user.username}'s Profile</h1>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Role:</strong> {user.role}</p>
+            <button className="logout-btn" onClick={handleLogout}>Log Out</button>
+          </div>
         </div>
       )}
 
@@ -89,7 +102,19 @@ const Profile = () => {
             if (activeTab === 'reviews') {
               return (
                 <li key={item.id || idx} className="data-card review-card2">
-                  <img src={item.profile_image_url || "/default-profile.png"} alt={item.username} />
+                  <img src={item.profile_image_url} alt={item.username} />
+                  <div className="review-details">
+                    <span>{new Date(item.created_at).toLocaleDateString()}</span>
+                    <h4>{item.username}</h4>
+                    <p>{item.content}</p>
+                  </div>
+                </li>
+              );
+            }
+            if (activeTab === 'reviews' && decoded.role !== 'admin') {
+              return (
+                <li key={item.id || idx} className="data-card review-card2">
+                  <img src={item.profile_image_url} alt={item.username} />
                   <div className="review-details">
                     <span>{new Date(item.created_at).toLocaleDateString()}</span>
                     <h4>{item.username}</h4>
@@ -113,8 +138,8 @@ const Profile = () => {
 
             if (activeTab === 'comments') {
               return (
-                <li key={item.id || idx} className="data-card comment-card">
-                  <div className="comment-icon">💬</div>
+                <li key={item.id || idx} className="data-card comment-card2">
+                  <img src={item.profile_image_url} alt={item.username} />
                   <div className="comment-details">
                     <span>{new Date(item.created_at).toLocaleDateString()}</span>
                     <h4>On Review ID: {item.review_id}</h4>

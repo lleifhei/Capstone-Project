@@ -10,7 +10,20 @@ app.use(express.json());
 // GET /reviews - Get all reviews
 router.get("/", async (req, res) => {
   try {
-    const reviews = await Pool.query("SELECT * FROM reviews");
+    const reviews = await Pool.query(`SELECT 
+      reviews.id AS review_id,
+      reviews.item_id,
+      reviews.rating,
+      reviews.content,
+      reviews.created_at,
+      users.id AS user_id,
+      users.username,
+      users.email,
+      users.profile_image_url,
+      users.role
+      FROM reviews
+      JOIN users ON reviews.user_id = users.id;`
+    );
     res.json(reviews.rows)
   } catch (error) {
     console.error("Error fetching reviews:", error);
@@ -56,12 +69,24 @@ router.get("/item/:item_id", async (req, res) => {
 router.get("/user/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
-    const reviews = await Pool.query("SELECT * FROM reviews WHERE user_id = $1", [user_id]);
+    // const reviews = await Pool.query("SELECT * FROM reviews WHERE user_id = $1", [user_id]);
+    const reviews = await Pool.query(`SELECT 
+      reviews.id AS review_id,
+      reviews.item_id,
+      reviews.rating,
+      reviews.content,
+      reviews.created_at,
+      users.id AS user_id,
+      users.username,
+      users.email,
+      users.profile_image_url,
+      users.role
+      FROM reviews
+      JOIN users ON reviews.user_id = users.id
+      WHERE user_id = $1`, [user_id]
+    );
 
-    res.json({
-      success: true,
-      data: reviews.rows,
-    });
+    res.json(reviews.rows)
   } catch (error) {
     console.error("Error fetching reviews by user:", error);
     res.status(500).json({ success: false, message: "Failed to fetch reviews by user" });
