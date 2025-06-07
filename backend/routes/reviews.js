@@ -75,16 +75,14 @@ router.get("/user/:user_id", async (req, res) => {
 // POST /reviews - Create a new review
 router.post("/", authenticate, async (req, res) => {
   try {
-    const { item_id, user_id, rating, content } = req.body;
+    const { item_id, rating, content } = req.body;
+    const user_id = req.user.id;
     const newReview = await Pool.query(
       "INSERT INTO reviews (item_id, user_id, rating, content) VALUES ($1, $2, $3, $4) RETURNING *",
       [item_id, user_id, rating, content]
     );
 
-    res.status(201).json({
-      success: true,
-      data: newReview.rows[0],
-    });
+    res.status(201).json(newReview.rows[0]);
   } catch (error) {
     console.error("Error creating review:", error);
     res.status(500).json({ success: false, message: "Failed to create review" });

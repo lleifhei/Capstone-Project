@@ -5,16 +5,25 @@ import Review from "./Review";
 import "./ItemDetails.css"
 import axios from 'axios'
 
-const ItemDetail = () => {
+const ItemDetail = ( { token }) => {
     const { id } = useParams()
     const [ album, setAlbum] = useState()
     const [ tracks, setTracks] = useState([])
     const [ reviews, setReviews] = useState([])
 
+    const fetchReviews = async () => {
+        try{
+            const res = await axios.get(`http://localhost:3000/api/reviews/item/${id}`)
+            setReviews(res.data);
+        }catch(err){
+            console.error(`Error fetching album reviews for ${id}`, err)
+        }
+    }
+
     useEffect(() => {
         axios.get(`http://localhost:3000/api/items/${id}`).then(res => setAlbum(res.data)).catch(err => console.error(`Error fetching album details for ${id}`, err))
         axios.get(`http://localhost:3000/api/items/${id}/tracks`).then(res => setTracks(res.data)).catch(err => console.error(`Error fetching tracks for ${id}`, err))
-        axios.get(`http://localhost:3000/api/reviews/item/${id}`).then(res => setReviews(res.data)).catch(err => console.error(`Error fetching album reviews for ${id}`, err))
+        fetchReviews();
     }, [id])
     if (!album) return <p>Loading...</p>
     return (
@@ -50,7 +59,7 @@ const ItemDetail = () => {
             </div>
             <div className="tracks-reviews-container">
                 {tracks.length !== 1 && <TrackList tracks={tracks}/>}
-                <Review reviews={reviews} album={album}/>
+                <Review reviews={reviews} album={album} token={token} fetchReviews={fetchReviews} />
             </div>
         </>
     );

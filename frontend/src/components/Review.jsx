@@ -1,24 +1,47 @@
 import './Review.css';
 import ReviewItem from './ReviewItem';
 import { useState } from 'react';
+import axios from 'axios';
 
-const Review = ({ reviews, album }) => {
+const Review = ({ reviews, album, token, fetchReviews }) => {
     const [ showForm, setShowForm ] = useState(false);
     const [ rating, setRating ] = useState(0);
     const [ content, setContent ] = useState("");
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // TODO: Post to your review API
-        console.log("Submitted:", { rating, content });
-        setRating(0);
-        setContent("");
-        setShowForm(false);
+        try{
+            await axios.post('http://localhost:3000/api/reviews', {
+                item_id: album.id,
+                rating,
+                content 
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setRating(0);
+            setContent("");
+            setShowForm(false);
+            fetchReviews();
+        }catch(err){
+            console.error('Error posting review:', err);
+            throw err;
+        }
     };
     return (
     <div className="review-section-container">
         <div className="review-section-header">
         <h2>Reviews</h2>
-        <button className="write-review-button" onClick={() => setShowForm(true)}>Write a Review</button>
+        {token ? (
+            <button className="write-review-button" onClick={() => setShowForm(true)}>
+            Write a Review
+            </button>
+        ) : (
+            <button className="write-review-button locked" disabled>
+            🔒 Write a Review
+            </button>
+        )}
         </div>
         {showForm && (
             <div className="modal-overlay">
@@ -51,7 +74,7 @@ const Review = ({ reviews, album }) => {
         <div className="reviews-list">
         {reviews.length ? (
             reviews.map(review => (
-                <ReviewItem review={review}/>
+                <ReviewItem review={review} token={token} album={album}/>
             ))
         ) : (
             <div className="no-reviews">

@@ -10,15 +10,16 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import "./App.css";
 function App() {
+  const token = localStorage.getItem('token')
   return (
     <>
       <BrowserRouter>
-        <Navbar/>
+        <Navbar token={token}/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login/>}/>
-          <Route path="/items/:id" element={<ItemDetail />}/>
+          <Route path="/items/:id" element={<ItemDetail token={token}/>}/>
           <Route path="/profile" element={<Profile />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/reviews/:id" element={<ReviewDetail />} />
