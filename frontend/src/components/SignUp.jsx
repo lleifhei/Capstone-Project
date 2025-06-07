@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './SignUp.css';
 
-
 const SignUp = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -22,9 +21,10 @@ const SignUp = () => {
 
     return (
         <div className="signup-container">
-            <h1 className="title">Music Reviews</h1>
         <div className="signup-form">
-            <h2>Sign Up</h2>
+            <div className="signup-title">
+               Sign Up Now
+            </div>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">Username:</label>
@@ -66,3 +66,5 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+

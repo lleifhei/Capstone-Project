@@ -8,6 +8,7 @@ import NewReview from "./components/NewReview";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import "./App.css";
 function App() {
   return (
     <>

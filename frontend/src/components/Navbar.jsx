@@ -1,12 +1,10 @@
 import React from "react";
 import "./Navbar.css";
-import { FaBars, FaSearch } from "react-icons/fa";
+import { FaBars, FaSearch, FaIcons } from "react-icons/fa";
 
-const Navbar = () => {
-  const navigateToLogin = () => {
-    window.location.href = "/login";
-  };
-const navigateToHome = () => {
+const Navbar = ({ token }) => {
+  
+  const navigateToHome = () => {
     window.location.href = "/";
   }
   return (
@@ -18,7 +16,9 @@ const navigateToHome = () => {
           </button>
         </div>
         <div className="navbar-center">
-          <h1 className="logo">Sound Judgment</h1>
+          <button onClick={navigateToHome} className="logo">
+          Sound Judgment
+          </button>
         </div>
         <div className="navbar-right">
           <button onClick={navigateToLogin}>MY PROFILE/LOGIN</button>
