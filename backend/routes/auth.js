@@ -32,7 +32,7 @@ router.post('/login', async(req, res) => {
         if(!valid){
             return res.status(401).json({error: "Invalid Credentials"});
         }
-        const token = jwt.sign({id: user.id, email: user.email, role: user.role}, JWT_SECRET, {expiresIn: '1h'})
+        const token = jwt.sign({id: user.id, email: user.email, role: user.role, username: user.username}, JWT_SECRET, {expiresIn: '1h'})
         res.status(201).json({token})
     }catch(err){
         res.status(500).json({ error: 'Server error' });
@@ -55,6 +55,15 @@ router.get('/:userId', async(req, res) => {
         res.json(result.rows)
     }catch(err){
         res.status(500).json({error: "Failed to fetch user"})
+    }
+})
+
+router.get('/', async(req, res) => {
+    try{
+        const result = await pool.query('SELECT * FROM users');
+        res.json(result.rows)
+    }catch(err){
+        res.status(500).json({error: "Failed to fetch users"})
     }
 })
 

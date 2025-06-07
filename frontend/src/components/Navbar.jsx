@@ -3,14 +3,6 @@ import "./Navbar.css";
 import { FaBars, FaSearch } from "react-icons/fa";
 
 const Navbar = ({ token }) => {
-  const navigateToLogin = () => {
-    window.location.href = "/login";
-  };
-  
-  const navigateToHome = () => {
-    window.location.href = "/";
-  };
-
   return (
     <header className="navbar">
       <div className="navbar-top">
@@ -20,7 +12,7 @@ const Navbar = ({ token }) => {
           </button>
         </div>
         <div className="navbar-center">
-          <button onClick={navigateToHome} className="logo">Sound Judgment</button>
+          <a href="/">Sound Judgement</a>
         </div>
         <div className="navbar-right">
           {token ? (

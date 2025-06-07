@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const Login = () => {
+const Login = ( { setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -10,17 +10,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Assuming you have a loginUser function that handles the API call
       const response = await axios.post('http://localhost:3000/api/auth/login', {
         email,
         password
       })
       localStorage.setItem('token', response.data.token)
+      localStorage.setItem('user_id', response.data.user_id);
+      setToken(response.data.token)
       navigate("/profile", {
         state: { user_id: response.data.user_id }
       });
-      // Optionally, you can also store user_id in localStorage
-      localStorage.setItem('user_id', response.data.user_id);
       console.log("Login successful:", response.data);
     } catch (error) {
       console.error("Login error:", error);

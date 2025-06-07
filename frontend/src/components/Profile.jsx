@@ -1,148 +1,132 @@
-import React, { useEffect, useState } from "react";
-import "./Profile.css";
-import axios from "axios";
-import { Navigate, useParams } from "react-router-dom";
-import "./Review.css";
-
+import React, { useState, useEffect } from "react";
+import {jwtDecode} from "jwt-decode";
+import './Profile.css';
+import axios from 'axios';
 
 const Profile = () => {
-  const [user, setUser] = useState({});
-  const [reviews, setReviews] = useState([]);
-
-  let { token, user_id } = useParams();
-  if (!user_id) {
-    user_id = localStorage.getItem("user_id");
-  }
-  if (!token) {
-    token = localStorage.getItem("token");
-  }
-  const isAuthenticated = token && user_id;
-  if (!isAuthenticated) {
-    console.error("No user_id or token found in localStorage");
-    window.location.href = "/login"; // Redirect to login page if no user_id or token
-  }
+  const token = localStorage.getItem('token');
+  const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('');
+  const [data, setData] = useState([]);
+  const decoded = jwtDecode(token);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/api/users/${user_id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUser(response.data.rows[0] || {});
-        if (response.data.rows.length === 0) {
-          console.log("No user found with this ID.");
-        } else {
-          console.log("Fetched user data:", response.data.rows[0]);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+    if (token) {
+      setUser(decoded);
+      if (decoded.role === 'admin') {
+        setActiveTab('music');
+        fetchData('music');
+      } else {
+        setActiveTab('reviews');
+        fetchData('reviews');
       }
-    };
+    }
+  }, [token]);
 
-    fetchUser();
-  }, [user_id, token]);
-  // State to hold user reviews
-  // and fetch reviews from the backend
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No authentication token found");
-          return;
-        }
-        const response = await axios.get(
-          `http://localhost:3000/api/reviews/users/${user_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setReviews(response.rows || []);
-        if (response.rows.length === 0) {
-          console.log("No reviews found for this user.");
-        }
-        console.log("Fetched reviews:", response.rows);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-      }
-    };
-
-    fetchReviews();
-  }, [user_id]);
-
-  const handleAccountDeletion = async () => {
+  const fetchData = async (tab) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No authentication token found");
-        return;
+      setActiveTab(tab);
+      let res;
+      if(decoded.role === 'admin'){
+        if (tab === 'music') res = await axios.get('http://localhost:3000/api/items');
+        else if (tab === 'reviews') res = await axios.get('http://localhost:3000/api/reviews');
+        else if (tab === 'comments') res = await axios.get('http://localhost:3000/api/auth');
+        else if (tab === 'users') res = await axios.get('http://localhost:3000/api/auth');
+      }else{
+        if (tab === 'reviews') res = await axios.get(`http://localhost:3000/api/reviews/${user.id}`);
+        else if (tab === 'comments') res = await axios.get(`http://localhost:3000/api/comments/${user.id}`);
       }
-      await axios.delete(`http://localhost:3000/api/users/${user_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      localStorage.removeItem("token");
-      window.location.href = "/login"; // Redirect to login page after deletion
-    } catch (error) {
-      console.error("Error deleting account:", error);
+
+      setData(res.data);
+    } catch (err) {
+      console.error(`Error loading ${tab}:`, err);
     }
   };
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  const adminTabs = ['music', 'reviews', 'users'];
+  const userTabs = ['reviews', 'comments'];
+
+  const tabs = user?.role === 'admin' ? adminTabs : userTabs;
 
   return (
-    <>
     <div className="profile-container">
-      <div className="user-profile-container">
-        <h1 className="user-profile-title">
-          {user.username ? `${user.username}'s Profile` : "My Profile"}
-        </h1>
-        <h2 className="user-joined">
-          Joined: {user.created_at ? new Date(user.created_at).toLocaleDateString() : "N/A"}
-        </h2>
+      {user && (
+        <div className="user-info">
+          <h1>{user.username}'s Profile</h1>
+          <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Role:</strong> {user.role}</p>
+        </div>
+      )}
+
+      <div className="profile-filter-section">
+        <div className="profile-buttons">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              className={`profile-btn ${activeTab === tab ? 'active' : ''}`}
+              onClick={() => fetchData(tab)}
+            >
+              {tab.toUpperCase()}
+            </button>
+          ))}
+        </div>
       </div>
-      <div className="reviews-container">
-        User Reviews:
-        {reviews.length > 0 ? (
-          reviews.map((review) => (
-            <div key={review.id} className="review-card">
-              <h3 className="review-title">{review.title}</h3>
-              <p className="review-content">{review.content}</p>
-              <p className="review-rating">Rating: {review.rating}</p>
-              <p className="review-date">
-                Date: {new Date(review.created_at).toLocaleDateString()}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p>You haven't posted any reviews yet!</p>
-        )}
-      </div>
-      <div className="profile-actions">
-        <button className="delete-account-button" onClick={handleAccountDeletion}>Delete Account</button>
-      
-      </div>
-      <div className="logout-container">
-        <button
-          className="logout-button"
-          onClick={() => {
-            localStorage.removeItem("token");
-            window.location.href = "/login"; // Redirect to login page
-          }}
-        >
-          Logout
-        </button>
-      </div>
+
+      <ul className="data-list">
+          {data.map((item, idx) => {
+            if (activeTab === 'music') {
+              return (
+                <li key={item.id || idx} className="data-card music-card">
+                  <img src={item.image_url} alt={item.title} />
+                  <div>
+                    <h3>{item.title}</h3>
+                    <p>By {item.artist}</p>
+                  </div>
+                </li>
+              );
+            }
+
+            if (activeTab === 'reviews') {
+              return (
+                <li key={item.id || idx} className="data-card review-card2">
+                  <img src={item.profile_image_url || "/default-profile.png"} alt={item.username} />
+                  <div className="review-details">
+                    <span>{new Date(item.created_at).toLocaleDateString()}</span>
+                    <h4>{item.username}</h4>
+                    <p>{item.content}</p>
+                  </div>
+                </li>
+              );
+            }
+
+            if (activeTab === 'users') {
+              return (
+                <li key={item.id || idx} className="data-card user-card">
+                  <img src={item.profile_image_url || "/default-profile.png"} alt={item.email} />
+                  <div>
+                    <p><strong>{item.email}</strong></p>
+                    <p>Role: {item.role}</p>
+                  </div>
+                </li>
+              );
+            }
+
+            if (activeTab === 'comments') {
+              return (
+                <li key={item.id || idx} className="data-card comment-card">
+                  <div className="comment-icon">💬</div>
+                  <div className="comment-details">
+                    <span>{new Date(item.created_at).toLocaleDateString()}</span>
+                    <h4>On Review ID: {item.review_id}</h4>
+                    <p>{item.content}</p>
+                  </div>
+                </li>
+              );
+            }
+            return null;
+          })}
+        </ul>
     </div>
-    </>
   );
 };
 

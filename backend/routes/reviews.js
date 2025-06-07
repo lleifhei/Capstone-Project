@@ -11,11 +11,7 @@ app.use(express.json());
 router.get("/", async (req, res) => {
   try {
     const reviews = await Pool.query("SELECT * FROM reviews");
-
-    res.json({
-      success: true,
-      data: reviews.rows,
-    });
+    res.json(reviews.rows)
   } catch (error) {
     console.error("Error fetching reviews:", error);
     res
