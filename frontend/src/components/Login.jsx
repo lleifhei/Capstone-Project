@@ -10,7 +10,6 @@ const Login = ( { setToken }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +27,7 @@ const Login = ( { setToken }) => {
       console.log("Login successful:", response.data);
     } catch (error) {
 
-=======
+      // Handle error response
       console.error("Login error:", error);
       setError("Incorrect Email or Password.")
     }
