@@ -1,12 +1,11 @@
 .signup-container {
-    width: auto;
-    max-width: 750px;
-    margin: 0 auto;
-    margin-top: 50px;
-    padding: 20px;
-    align-items: center;
-    height: 100vh;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
   
 .signup-title {
     font-size: larger;
@@ -18,6 +17,8 @@
   }
   
   .signup-form {
+    width: 100%;
+    max-width: 750px;
     background: #ffffff;
     padding: 2.5rem;
     border-radius: 12px;
@@ -133,4 +134,27 @@
     background: #bdc3c7;
     transform: none;
     box-shadow: none;
+  }
+
+  .signup-links2 {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .login-link2 {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+  
+  .login-link2 a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .login-link2 a:hover {
+    color: #5a6fd8;
+    text-decoration: underline;
   }

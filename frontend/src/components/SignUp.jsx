@@ -67,6 +67,11 @@ const SignUp = ({ setToken }) => {
                 </div>
                 <button type="submit">Sign Up</button>
             </form>
+            <div className="signup-links2">
+                <p className="login-link2">
+                    Don't have an account? <a href="/login">Login</a>
+                </p>
+            </div>
         </div>
     </div>
     );
