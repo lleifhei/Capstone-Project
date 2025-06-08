@@ -30,10 +30,10 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    font-size: 2rem;
   }
   
   .logo {
-    font-family: 'Edo SZ', serif;
     font-size: 1.8rem;
     font-weight: bold;
     color: white;

@@ -3,23 +3,18 @@ import "./Navbar.css";
 import { FaBars, FaSearch, FaIcons } from "react-icons/fa";
 
 const Navbar = ({ token }) => {
-  
-  const navigateToHome = () => {
-    window.location.href = "/";
-  };
 
   return (
     <header className="navbar">
       <div className="navbar-top">
         <div className="navbar-left">
-          <button onClick={navigateToHome} className="menu-button">
-            <FaBars className="Home"/>
+          <button className="menu-button">
+            <FaBars />
           </button>
         </div>
         <div className="navbar-center">
-          <button onClick={navigateToHome} className="logo">
-          Sound Judgment
-          </button>
+
+          <a href="/">Sound Judgment</a>
         </div>
         <div className="navbar-right">
           {token ? (
@@ -28,8 +23,7 @@ const Navbar = ({ token }) => {
             </div>
           ) : (
             <div>
-              <a href="/login">Log In</a>
-              <a href="/register">Sign Up</a>
+              <a href="/login">Login</a>
             </div>
           )}
         </div>

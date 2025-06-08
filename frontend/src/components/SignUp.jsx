@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
 
-const SignUp = () => {
+
+const SignUp = ({ setToken }) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:3000/api/auth/register', { username, email, password });
-
-                
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user_id', response.data.user_id);
+            setToken(response.data.token);
+            navigate('/profile', {
+                state: { user_id: response.data.user_id }
+            });
             console.log('User signed up successfully:', response.data);
         } catch (error) {
             console.error('Error signing up:', error.response?.data || error.message);

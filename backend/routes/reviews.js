@@ -10,12 +10,21 @@ app.use(express.json());
 // GET /reviews - Get all reviews
 router.get("/", async (req, res) => {
   try {
-    const reviews = await Pool.query("SELECT * FROM reviews");
-
-    res.json({
-      success: true,
-      data: reviews.rows,
-    });
+    const reviews = await Pool.query(`SELECT 
+      reviews.id AS review_id,
+      reviews.item_id,
+      reviews.rating,
+      reviews.content,
+      reviews.created_at,
+      users.id AS user_id,
+      users.username,
+      users.email,
+      users.profile_image_url,
+      users.role
+      FROM reviews
+      JOIN users ON reviews.user_id = users.id;`
+    );
+    res.json(reviews.rows)
   } catch (error) {
     console.error("Error fetching reviews:", error);
     res
@@ -60,12 +69,24 @@ router.get("/item/:item_id", async (req, res) => {
 router.get("/user/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
-    const reviews = await Pool.query("SELECT * FROM reviews WHERE user_id = $1", [user_id]);
+    // const reviews = await Pool.query("SELECT * FROM reviews WHERE user_id = $1", [user_id]);
+    const reviews = await Pool.query(`SELECT 
+      reviews.id AS review_id,
+      reviews.item_id,
+      reviews.rating,
+      reviews.content,
+      reviews.created_at,
+      users.id AS user_id,
+      users.username,
+      users.email,
+      users.profile_image_url,
+      users.role
+      FROM reviews
+      JOIN users ON reviews.user_id = users.id
+      WHERE user_id = $1`, [user_id]
+    );
 
-    res.json({
-      success: true,
-      data: reviews.rows,
-    });
+    res.json(reviews.rows)
   } catch (error) {
     console.error("Error fetching reviews by user:", error);
     res.status(500).json({ success: false, message: "Failed to fetch reviews by user" });
@@ -93,21 +114,17 @@ router.post("/", authenticate, async (req, res) => {
 router.put("/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
-    const { rating, content, user_id } = req.body;
+    const { rating, content } = req.body;
 
     const updatedReview = await Pool.query(
-      "UPDATE reviews SET rating = $1, content = $2, user_id = $3 WHERE id = $4 RETURNING *",
-      [rating, content, user_id, id]
+      "UPDATE reviews SET rating = $1, content = $2 WHERE id = $3 RETURNING *",
+      [rating, content, id]
     );
 
     if (updatedReview.rows.length === 0) {
       return res.status(404).json({ success: false, message: "Review not found" });
     }
-
-    res.json({
-      success: true,
-      data: updatedReview.rows[0],
-    });
+    res.json(updatedReview.rows[0])
   } catch (error) {
     console.error("Error updating review:", error);
     res.status(500).json({ success: false, message: "Failed to update review" });

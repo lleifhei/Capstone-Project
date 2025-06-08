@@ -79,12 +79,23 @@ router.get('/items/:item_id', async(req, res) => {
 router.get("/user/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
-    const comments = await Pool.query("SELECT * FROM comments WHERE user_id = $1", [user_id]);
+    const comments = await Pool.query(`SELECT 
+      comments.id AS comment_id,
+      comments.review_id,
+      comments.item_id,
+      comments.content,
+      comments.created_at,
+      users.id AS user_id,
+      users.username,
+      users.email,
+      users.profile_image_url,
+      users.role
+      FROM comments
+      JOIN users ON comments.user_id = users.id
+      WHERE user_id = $1`, [user_id]
+    );
 
-    res.json({
-      success: true,
-      data: comments.rows,
-    });
+    res.json(comments.rows)
   } catch (error) {
     console.error("Error fetching comments by user:", error);
     res.status(500).json({ success: false, message: "Failed to fetch comments by user" });
@@ -120,11 +131,7 @@ router.put("/:id", async (req, res) => {
     if (updatedComment.rows.length === 0) {
       return res.status(404).json({ success: false, message: "Comment not found" });
     }
-
-    res.json({
-      success: true,
-      data: updatedComment.rows[0],
-    });
+    res.json(updatedComment.rows[0])
   } catch (error) {
     console.error("Error updating comment:", error);
     res.status(500).json({ success: false, message: "Failed to update comment" });

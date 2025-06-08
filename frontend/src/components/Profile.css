@@ -1,27 +1,217 @@
-/* Profile.css */
-
 .profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 5%;
+    padding: 4rem;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #111;
+  }
+  
+  .user-info {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .user-info h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .user-info p {
+    font-size: 1rem;
+    margin: 0.25rem 0;
+  }
+  
+  .profile-filter-section {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .profile-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .profile-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 999px;
+    background-color: #e6e6e6;
+    color: black;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .profile-btn:hover {
+    background-color: #ccc;
+  }
+  
+  .profile-btn.active {
+    background-color: black;
+    color: white;
+  }
+  
+  .data-list {
     display: flex;
     flex-direction: column;
-    align-items: left;
-    padding: 100px;
-    background-color: #f9f9f9;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .data-card {
+    display: flex;
+    align-items: flex-start;
+    background-color: white;
+    padding: 1rem;
+    gap: 1.25rem;
+    border-bottom: 1px solid black;
+  }
+  
+  .data-card:hover{
+    background-color: #f0f0f0; 
+    cursor: pointer;
+  }
+  
+  .data-card img {
+    width: 64px;
+    height: 64px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: auto;
-}
+    object-fit: cover;
+  }
+  
+  .music-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .music-card p {
+    margin: 0.25rem 0 0;
+    color: #555;
+  }
+
+  .user-card img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .user-card p {
+    margin: 0.25rem 0;
+  }
+  
+  .review-card2 img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .review-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .review-details span {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.25rem;
+  }
+  
+  .review-details h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .review-details p {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .comment-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .comment-card2 img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .comment-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .comment-details span {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.25rem;
+  }
+  
+  .comment-details h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .comment-details p {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .logout-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .logout-btn:hover{
+      background-color: #333;
+  }
 
 
-.reviews-list {
-    width: 100%;
-    max-width: 600px;
-    margin-top: 20px;
-    padding: 20px;
-}
-.review-item {
-    background-color: #ffffff;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  .user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+  
+  .user-profile-pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
