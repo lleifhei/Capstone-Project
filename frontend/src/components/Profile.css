@@ -214,4 +214,56 @@
     flex-direction: column;
     gap: 0.5rem;
   }
+  .user-profile{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profile-image-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 260px;
+  }
+  
+  .profile-image-form input[type="text"] {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+  }
+  
+  .profile-image-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .profile-image-buttons button {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .profile-image-buttons button[type="submit"] {
+    background-color: #111;
+    color: white;
+  }
+  
+  .profile-image-buttons button[type="submit"]:hover {
+    background-color: #333;
+  }
+  
+  .profile-image-buttons button[type="button"] {
+    background-color: #ccc;
+  }
+  
+  .profile-image-buttons button[type="button"]:hover {
+    background-color: #999;
+  }
   

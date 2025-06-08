@@ -41,8 +41,8 @@ router.post('/login', async(req, res) => {
 
 router.get('/me', authenticate, async(req, res) => {
     try{
-        const result = await pool.query('SELECT id, email, role FROM users WHERE id = $1', [req.user.id]);
-        res.send(result.rows[0]);
+        const result = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+        res.json(result.rows[0]);
     }catch(err){
         res.status(500).json({ error: 'Failed to fetch user info' });
     }
@@ -67,4 +67,14 @@ router.get('/', async(req, res) => {
     }
 })
 
+router.put('/:id', authenticate, async(req, res) => {
+    const {id} = req.params
+    const {profile_image_url} = req.body
+    try{
+        const result = await pool.query('UPDATE users SET profile_image_url = $1 WHERE id = $2 RETURNING *', [profile_image_url, id])
+        res.json(result.rows)
+    }catch(err){
+        res.json({error: "Failed to update user"})
+    }
+})
 module.exports = router;

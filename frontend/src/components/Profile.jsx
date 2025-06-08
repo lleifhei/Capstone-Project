@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {jwtDecode} from "jwt-decode";
 import './Profile.css';
 import axios from 'axios';
@@ -8,18 +8,28 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('');
   const [data, setData] = useState([]);
-  const decoded = jwtDecode(token);
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const [isEditingImage, setIsEditingImage] = useState(false);
+  const decoded = useMemo(() => token ? jwtDecode(token) : null, [token]);
+
 
   useEffect(() => {
-    if (token) {
-      setUser(decoded);
-      if (decoded.role === 'admin') {
-        setActiveTab('music');
-        fetchData('music');
-      } else {
-        setActiveTab('reviews');
-        fetchData('reviews');
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3000/api/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUser(res.data);
+      } catch (err) {
+        console.error("Error fetching user profile", err);
       }
+    };
+  
+    if (decoded?.id) {
+      fetchUser();
+      const defaultTab = decoded.role === 'admin' ? 'music' : 'reviews';
+      setActiveTab(defaultTab);
+      fetchData(defaultTab);
     }
   }, [token]);
 
@@ -57,11 +67,50 @@ const Profile = () => {
     <div className="profile-container">
       {user && (
         <div className="user-info">
-          <img
-            className="user-profile-pic"
-            src={user.image}
-            alt={`${user.username}'s profile`}
-          />
+          <div className="user-profile">
+            <img
+              className="user-profile-pic"
+              src={user.profile_image_url}
+              alt={`${user.username}'s profile`}
+            />
+            {isEditingImage ? (
+              <form
+                className="profile-image-form"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  try {
+                    await axios.put(`http://localhost:3000/api/auth/${user.id}`, {
+                      profile_image_url: newImageUrl
+                    }, {
+                      headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const updated = await axios.get(`http://localhost:3000/api/auth/${user.id}`, {
+                      headers: { Authorization: `Bearer ${token}` }
+                    });
+                    setIsEditingImage(false); 
+                    setNewImageUrl("")
+                    setUser(updated.data[0]);
+                    fetchData(activeTab)
+                  } catch (err) {
+                    console.error('Failed to update profile image', err);
+                  }
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Enter new profile image URL"
+                  value={newImageUrl}
+                  onChange={(e) => setNewImageUrl(e.target.value)}
+                />
+                <div className="profile-image-buttons">
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={() => {setIsEditingImage(false); setNewImageUrl("")}}>Cancel</button>
+                </div>
+              </form>            
+            ) : (
+              <button onClick={() => setIsEditingImage(true)}>Change Image</button>
+            )}
+          </div>
           <div className="user-details">
             <h1>{user.username}'s Profile</h1>
             <p><strong>Email:</strong> {user.email}</p>
