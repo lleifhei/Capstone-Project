@@ -5,8 +5,10 @@ import Profile from "./components/Profile";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import "./App.css";
 import {jwtDecode} from "jwt-decode";
 import { useState, useEffect } from "react";
+
 function App() {
   const [token, setToken] = useState(null)
   useEffect(() => {

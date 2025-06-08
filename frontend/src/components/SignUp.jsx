@@ -28,9 +28,10 @@ const SignUp = ({ setToken }) => {
 
     return (
         <div className="signup-container">
-            <h1 className="title">Music Reviews</h1>
         <div className="signup-form">
-            <h2>Sign Up</h2>
+            <div className="signup-title">
+               Sign Up Now
+            </div>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">Username:</label>
@@ -72,3 +73,5 @@ const SignUp = ({ setToken }) => {
 };
 
 export default SignUp;
+
+

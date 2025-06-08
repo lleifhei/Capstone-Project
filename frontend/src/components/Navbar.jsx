@@ -1,8 +1,9 @@
 import React from "react";
 import "./Navbar.css";
-import { FaBars, FaSearch } from "react-icons/fa";
+import { FaBars, FaSearch, FaIcons } from "react-icons/fa";
 
 const Navbar = ({ token }) => {
+
   return (
     <header className="navbar">
       <div className="navbar-top">
@@ -12,7 +13,8 @@ const Navbar = ({ token }) => {
           </button>
         </div>
         <div className="navbar-center">
-          <a href="/">Sound Judgement</a>
+
+          <a href="/">Sound Judgment</a>
         </div>
         <div className="navbar-right">
           {token ? (
