@@ -1,0 +1,16 @@
+.search-results{
+    margin-top: 8%;
+}
+.search-results h2{
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #141414;
+    text-align: center;
+}
+.search-p {
+    text-align: center;
+    justify-content: center;
+    color: black;
+    font-size: 2rem;
+    margin-top: 2rem;
+  }

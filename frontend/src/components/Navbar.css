@@ -23,7 +23,7 @@
   
   .navbar-left .icon {
     font-size: 1.2rem;
-    color: white;
+    color: black;
   }
   
   .navbar-center {
@@ -56,4 +56,41 @@
   .navbar-right .icon {
     font-size: 1rem;
   }
+  .search-form {
+    display: flex;
+    align-items: center;
+    border: 1px solid #555;
+    border-radius: 999px;
+    overflow: hidden;
+    background-color: #1f1f1f;
+  }
   
+  .search-button {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #ccc;
+    font-size: 1rem;
+  }
+  
+  .search-input {
+    border: none;
+    padding: 0.5rem 0.75rem;
+    outline: none;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 150px;
+    background-color: transparent;
+    color: #fff; 
+  }
+  
+  .search-input::placeholder {
+    color: #888;
+  }
+  
+  .search-button:hover {
+    color: #000;
+  }  

@@ -5,6 +5,7 @@ import Profile from "./components/Profile";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import SearchResults from "./components/SearchResults";
 import "./App.css";
 import {jwtDecode} from "jwt-decode";
 import { useState, useEffect } from "react";
@@ -35,6 +36,7 @@ function App() {
           <Route path="/login" element={<Login setToken={setToken}/>}/>
           <Route path="/items/:id" element={<ItemDetail token={token}/>}/>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -22,6 +22,22 @@ router.get('/', async(req, res) => {
     }
 } )
 
+router.get('/search', async(req, res) => {
+    const { q } = req.query;
+    console.log("Here ", q)
+    try{
+        const results = await pool.query(`
+            SELECT * FROM items 
+            WHERE LOWER(title) LIKE LOWER($1)
+                OR LOWER(artist) LIKE LOWER($1)
+            `, [`%${q}%`]);
+        res.json(results.rows);
+    }catch(err){
+        console.error("Search error:", err);
+        res.status(500).json({ error: "Search failed" });
+    }
+})
+
 router.get('/:itemId', async(req, res) => {
     const {itemId} = req.params;
     try{
@@ -45,21 +61,6 @@ router.get('/:itemId/tracks', async(req, res) => {
         res.json(results.rows)
     }catch(err){
         res.status(500).json({error: "Failed to fetch tracks"})
-    }
-})
-
-router.get('/search/q', async(req, res) => {
-    const { q } = req.query;
-    console.log("Here: ", q)
-    try{
-        const results = await pool.query(`
-            SELECT * FROM items 
-            WHERE LOWER(title) LIKE LOWER($1)
-                OR LOWER(artist) LIKE LOWER($1)
-            `, [`%${q}%`]);
-        res.json(results.rows);
-    }catch(err){
-        res.status(500).json({error: "Search failed"})
     }
 })
 
