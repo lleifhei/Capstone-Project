@@ -71,7 +71,7 @@ const Login = ( { setToken }) => {
         </form>
         <div className="login-links">
           <p className="signup-link">
-            Don't have an account?<Link to="signup">Sign Up</Link>
+            Don't have an account?<Link to="/signup">Sign Up</Link>
           </p>
         </div>
       </div>

@@ -16,7 +16,7 @@ const SearchResults = () => {
     axios.get(`${apiUrl}/api/items/search?q=${encodeURIComponent(query)}`)
       .then(res => setAlbums(res.data))
       .catch(err => console.error("Search failed", err));
-  }, [query]);
+  }, [query, apiUrl]);
 
   return (
     <div className="search-results">
