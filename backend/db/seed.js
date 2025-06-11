@@ -13,7 +13,7 @@ const seed = async () => {
       VALUES
         ('user1', 'user1@example.com', $1, 'user'),
         ('user2', 'user2@example.com', $1, 'user'),
-        ('admin1', 'admin1@example.com', $1, 'admin')
+        ('user3', 'user3@example.com', $1, 'user')
       RETURNING *;
     `, [passwordHash]);
     console.log('Users created');
