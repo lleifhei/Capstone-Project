@@ -8,6 +8,7 @@ const formatDuration = (ms) => {
   return `${minutes}:${seconds}`;
 };
 
+
 const TrackList = ({ tracks }) => {
   return (
     <div className="tracklist-container">
