@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import "./Navbar.css";
 import { FaBars, FaSearch, FaIcons } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ token }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -39,7 +40,7 @@ const Navbar = ({ token }) => {
             </div>
           ) : (
             <div>
-              <a href="/login">Login</a>
+              <Link to="/login">Login</Link>
             </div>
           )}
         </div>

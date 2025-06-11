@@ -10,6 +10,7 @@ const Review = ({ reviews, album, token, fetchReviews }) => {
     const [ showForm, setShowForm ] = useState(false);
     const [ rating, setRating ] = useState(0);
     const [ content, setContent ] = useState("");
+    const apiUrl = import.meta.env.VITE_API_URL;
     const userAlreadyReviewed = token && reviews.some(review => review.user_id === jwtDecode(token).id);
     let writeReviewButton;
     if(!token){
@@ -35,7 +36,7 @@ const Review = ({ reviews, album, token, fetchReviews }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            await axios.post('http://localhost:3000/api/reviews', {
+            await axios.post(`${apiUrl}/api/reviews`, {
                 item_id: album.id,
                 rating,
                 content 

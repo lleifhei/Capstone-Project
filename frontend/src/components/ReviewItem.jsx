@@ -13,6 +13,7 @@ const ReviewItem = ({ review, token, album, fetchReviews }) => {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [editContent, setEditContent] = useState(review.content);
     const [editRating, setEditRating] = useState(review.rating);
+    const apiUrl = import.meta.env.VITE_API_URL;
 
 
     let currentUserId = null;
@@ -27,7 +28,7 @@ const ReviewItem = ({ review, token, album, fetchReviews }) => {
 
     useEffect(() => {
         if (!review?.user_id) return;
-        axios.get(`http://localhost:3000/api/auth/${review.user_id}`).then(res => setUser(res.data[0])).catch(err => console.error(`Error fetching user for ${review.user_id}`, err))
+        axios.get(`${apiUrl}/api/auth/${review.user_id}`).then(res => setUser(res.data[0])).catch(err => console.error(`Error fetching user for ${review.user_id}`, err))
     }, [review.user_id])
 
     useEffect(() => {
@@ -37,7 +38,7 @@ const ReviewItem = ({ review, token, album, fetchReviews }) => {
 
     const fetchComments = async () => {
       try{
-        const res = await axios.get(`http://localhost:3000/api/comments/reviews/${review.id}`)
+        const res = await axios.get(`${apiUrl}/api/comments/reviews/${review.id}`)
         setComments(res.data);
       }catch (err){
         console.error("Failed to fetch comments", err)
@@ -55,7 +56,7 @@ const ReviewItem = ({ review, token, album, fetchReviews }) => {
             setError('Comment cannot be empty');
             return;
           }
-          await axios.post('http://localhost:3000/api/comments', {
+          await axios.post(`${apiUrl}/api/comments`, {
             review_id: review.id,
             item_id: album.id,
             content: commentContent
@@ -123,7 +124,7 @@ const ReviewItem = ({ review, token, album, fetchReviews }) => {
                       e.preventDefault();
                       try {
                         console.log("Here", token)
-                        await axios.put(`http://localhost:3000/api/reviews/${review.id}`, {
+                        await axios.put(`${apiUrl}/api/reviews/${review.id}`, {
                           rating: editRating,
                           content: editContent
                         }, {
@@ -167,7 +168,7 @@ const ReviewItem = ({ review, token, album, fetchReviews }) => {
                       className="delete-btn"
                       onClick={async () => {
                         try {
-                          await axios.delete(`http://localhost:3000/api/reviews/${review.id}`, {
+                          await axios.delete(`${apiUrl}/api/reviews/${review.id}`, {
                             headers: { Authorization: `Bearer ${token}` }
                           });
                           setShowDeleteConfirm(false);

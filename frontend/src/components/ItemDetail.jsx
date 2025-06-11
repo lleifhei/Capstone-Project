@@ -10,10 +10,11 @@ const ItemDetail = ( { token }) => {
     const [ album, setAlbum] = useState()
     const [ tracks, setTracks] = useState([])
     const [ reviews, setReviews] = useState([])
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     const fetchReviews = async () => {
         try{
-            const res = await axios.get(`http://localhost:3000/api/reviews/item/${id}`)
+            const res = await axios.get(`${apiUrl}/api/reviews/item/${id}`)
             setReviews(res.data);
         }catch(err){
             console.error(`Error fetching album reviews for ${id}`, err)
@@ -21,8 +22,8 @@ const ItemDetail = ( { token }) => {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/items/${id}`).then(res => setAlbum(res.data)).catch(err => console.error(`Error fetching album details for ${id}`, err))
-        axios.get(`http://localhost:3000/api/items/${id}/tracks`).then(res => setTracks(res.data)).catch(err => console.error(`Error fetching tracks for ${id}`, err))
+        axios.get(`${apiUrl}/api/items/${id}`).then(res => setAlbum(res.data)).catch(err => console.error(`Error fetching album details for ${id}`, err))
+        axios.get(`${apiUrl}/api/items/${id}/tracks`).then(res => setTracks(res.data)).catch(err => console.error(`Error fetching tracks for ${id}`, err))
         fetchReviews();
     }, [id])
     if (!album) return <p>Loading...</p>

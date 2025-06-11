@@ -11,12 +11,13 @@ const Profile = () => {
   const [newImageUrl, setNewImageUrl] = useState('');
   const [isEditingImage, setIsEditingImage] = useState(false);
   const decoded = useMemo(() => token ? jwtDecode(token) : null, [token]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/auth/me`, {
+        const res = await axios.get(`${apiUrl}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUser(res.data);
@@ -38,13 +39,13 @@ const Profile = () => {
       setActiveTab(tab);
       let res;
       if(decoded.role === 'admin'){
-        if (tab === 'music') res = await axios.get('http://localhost:3000/api/items');
-        else if (tab === 'reviews') res = await axios.get('http://localhost:3000/api/reviews');
-        else if (tab === 'comments') res = await axios.get('http://localhost:3000/api/auth');
-        else if (tab === 'users') res = await axios.get('http://localhost:3000/api/auth');
+        if (tab === 'music') res = await axios.get(`${apiUrl}/api/items`);
+        else if (tab === 'reviews') res = await axios.get(`${apiUrl}/api/reviews`);
+        else if (tab === 'comments') res = await axios.get(`${apiUrl}/api/auth`);
+        else if (tab === 'users') res = await axios.get(`${apiUrl}/api/auth`);
       }else{
-        if (tab === 'reviews') res = await axios.get(`http://localhost:3000/api/reviews/user/${decoded.id}`);
-        else if (tab === 'comments') res = await axios.get(`http://localhost:3000/api/comments/user/${decoded.id}`);
+        if (tab === 'reviews') res = await axios.get(`${apiUrl}/api/reviews/user/${decoded.id}`);
+        else if (tab === 'comments') res = await axios.get(`${apiUrl}/api/comments/user/${decoded.id}`);
       }
       setData(res.data);
     } catch (err) {
@@ -79,12 +80,12 @@ const Profile = () => {
                 onSubmit={async (e) => {
                   e.preventDefault();
                   try {
-                    await axios.put(`http://localhost:3000/api/auth/${user.id}`, {
+                    await axios.put(`${apiUrl}/api/auth/${user.id}`, {
                       profile_image_url: newImageUrl
                     }, {
                       headers: { Authorization: `Bearer ${token}` }
                     });
-                    const updated = await axios.get(`http://localhost:3000/api/auth/${user.id}`, {
+                    const updated = await axios.get(`${apiUrl}/api/auth/${user.id}`, {
                       headers: { Authorization: `Bearer ${token}` }
                     });
                     setIsEditingImage(false); 
