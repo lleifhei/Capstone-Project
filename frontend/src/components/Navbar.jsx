@@ -17,9 +17,9 @@ const Navbar = ({ token }) => {
       <div className="navbar-top">
         <div className="navbar-left">
           <form className="search-form" onSubmit={handleSearch}>
-              <button type="submit" className="search-button">
+              <Link to={`/search?q=${encodeURIComponent(searchQuery)}`} className="search-button">
                     <FaSearch />
-              </button>
+              </Link>
               <input
                 type="text"
                 className="search-input"
@@ -30,13 +30,12 @@ const Navbar = ({ token }) => {
           </form>
         </div>
         <div className="navbar-center">
-
-          <a href="/">Sound Judgment</a>
+          <Link to="/">Sound Judgment</Link>
         </div>
         <div className="navbar-right">
           {token ? (
             <div>
-              <a href="/profile">Profile</a>
+              <Link to="/profile">Profile</Link>
             </div>
           ) : (
             <div>

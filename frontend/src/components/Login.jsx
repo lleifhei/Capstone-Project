@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import './Login.css';
+import { Link } from "react-router-dom";
 
 
 const Login = ( { setToken }) => {
@@ -36,8 +37,7 @@ const Login = ( { setToken }) => {
 
 
   return (
-
-<div className="login-container">
+    <div className="login-container">
       <div className="login-form">
         <div className="login-title">
           Welcome Back
@@ -72,7 +72,7 @@ const Login = ( { setToken }) => {
         </form>
         <div className="login-links">
           <p className="signup-link">
-            Don't have an account? <a href="/signup">Sign Up</a>
+            Don't have an account? <Link to="/signup">Sign Up</Link>
           </p>
         </div>
       </div>
