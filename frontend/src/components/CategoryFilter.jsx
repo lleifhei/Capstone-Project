@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const CategoryFilter = ({ setAlbums}) => {
   const [active, setActive] = useState("all");
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const filters = ["all", "album", "single", "ep", "compilation"];
 
@@ -13,8 +14,8 @@ const CategoryFilter = ({ setAlbums}) => {
       try{
         const res = await axios.get(
           active === "all"
-          ? "http://localhost:3000/api/items"
-          : `http://localhost:3000/api/items?type=${active}`
+          ? `${apiUrl}/api/items`
+          : `${apiUrl}/api/items?type=${active}`
         )
         setAlbums(res.data)
       }catch(err){

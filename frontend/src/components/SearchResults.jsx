@@ -7,12 +7,13 @@ import AlbumCard from './AlbumCard';
 const SearchResults = () => {
   const [albums, setAlbums] = useState([]);
   const location = useLocation();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const query = new URLSearchParams(location.search).get('q');
 
   useEffect(() => {
     if (!query) return;
-    axios.get(`http://localhost:3000/api/items/search?q=${encodeURIComponent(query)}`)
+    axios.get(`${apiUrl}/api/items/search?q=${encodeURIComponent(query)}`)
       .then(res => setAlbums(res.data))
       .catch(err => console.error("Search failed", err));
   }, [query]);

@@ -6,16 +6,17 @@ const CommentItem = ({ comment, currentUserId, token, fetchComments }) => {
     const [ user, setUser] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(comment.content);
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         if (!comment?.user_id) return;
-        axios.get(`http://localhost:3000/api/auth/${comment.user_id}`).then(res => setUser(res.data[0])).catch(err => console.error(`Error fetching user for ${comment.user_id}`, err))
+        axios.get(`${apiUrl}/api/auth/${comment.user_id}`).then(res => setUser(res.data[0])).catch(err => console.error(`Error fetching user for ${comment.user_id}`, err))
     }, [comment.user_id])
 
     const handleDelete = async () => {
         try {
           await axios.delete(
-            `http://localhost:3000/api/comments/${comment.id}`,
+            `${apiUrl}/api/comments/${comment.id}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           fetchComments(); 
@@ -28,7 +29,7 @@ const CommentItem = ({ comment, currentUserId, token, fetchComments }) => {
         e.preventDefault();
         try {
           await axios.put(
-            `http://localhost:3000/api/comments/${comment.id}`,
+            `${apiUrl}/api/comments/${comment.id}`,
             { content: editContent },
             { headers: { Authorization: `Bearer ${token}` } }
           );

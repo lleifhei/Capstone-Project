@@ -9,11 +9,12 @@ const SignUp = ({ setToken }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/register', { username, email, password });
+            const response = await axios.post(`${apiUrl}/api/auth/register`, { username, email, password });
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user_id', response.data.user_id);
             setToken(response.data.token);
