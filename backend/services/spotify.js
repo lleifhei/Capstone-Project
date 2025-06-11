@@ -6,18 +6,26 @@ async function getAccessToken() {
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
   const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
-  const response = await axios.post(
-    'https://accounts.spotify.com/api/token',
-    'grant_type=client_credentials',
-    {
-      headers: {
-        Authorization: `Basic ${credentials}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+  try {
+    const response = await axios.post(
+      'https://accounts.spotify.com/api/token',
+      'grant_type=client_credentials',
+      {
+        headers: {
+          Authorization: `Basic ${credentials}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+    return response.data.access_token;
+  } catch (err) {
+    if (retries > 0) {
+      console.warn(`Retrying Spotify token... attempts left: ${retries - 1}`);
+      return getAccessToken(retries - 1);
+    } else {
+      throw err;
     }
-  );
-
-  return response.data.access_token;
+  }
 }
 
 async function fetchArtistImage(artistId) {
