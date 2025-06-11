@@ -1,4 +1,4 @@
-import './TrackList.css';
+import './Tracklist.css';
 
 const formatDuration = (ms) => {
   const minutes = Math.floor(ms / 60000);
