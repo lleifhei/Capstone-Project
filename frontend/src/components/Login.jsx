@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import './Login.css';
 import { Link } from "react-router-dom";
@@ -72,7 +72,7 @@ const Login = ( { setToken }) => {
         </form>
         <div className="login-links">
           <p className="signup-link">
-            Don't have an account? <Link to="/signup">Sign Up</Link>
+            Don't have an account?<Link to="signup">Sign Up</Link>
           </p>
         </div>
       </div>
