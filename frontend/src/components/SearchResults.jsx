@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import './SearchResults.css'
 import AlbumCard from './AlbumCard';
@@ -8,11 +8,12 @@ const SearchResults = () => {
   const [albums, setAlbums] = useState([]);
   const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const query = new URLSearchParams(location.search).get('q');
+  const query = searchParams.get('q') || '';
 
   useEffect(() => {
-    if (!query) return;
+    // if (!query) return;
     axios.get(`${apiUrl}/api/items/search?q=${encodeURIComponent(query)}`)
       .then(res => setAlbums(res.data))
       .catch(err => console.error("Search failed", err));

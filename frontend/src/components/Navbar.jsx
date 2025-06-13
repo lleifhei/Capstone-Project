@@ -2,15 +2,17 @@ import React from "react";
 import { useState } from "react";
 import "./Navbar.css";
 import { FaBars, FaSearch, FaIcons } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = ({ token }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
+    // window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
+  navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
   };
   return (
     <header className="navbar">
