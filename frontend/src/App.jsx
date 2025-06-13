@@ -35,7 +35,7 @@ function App() {
           <Route path="/signup" element={<SignUp setToken={setToken} />} />
           <Route path="/login" element={<Login setToken={setToken}/>}/>
           <Route path="/items/:id" element={<ItemDetail token={token}/>}/>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile setToken={setToken}/>} />
           <Route path="/search" element={<SearchResults />} />
         </Routes>
       </BrowserRouter>

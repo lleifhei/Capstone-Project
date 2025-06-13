@@ -2,9 +2,9 @@ import React, { useState, useEffect, useMemo } from "react";
 import {jwtDecode} from "jwt-decode";
 import './Profile.css';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Profile = () => {
+const Profile = ({ setToken }) => {
   const token = localStorage.getItem('token');
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('');
@@ -13,6 +13,7 @@ const Profile = () => {
   const [isEditingImage, setIsEditingImage] = useState(false);
   const decoded = useMemo(() => token ? jwtDecode(token) : null, [token]);
   const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -56,9 +57,10 @@ const Profile = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('user_id'); 
-    <Link to="/login" />
-  };  
+    localStorage.removeItem('user_id');
+    setToken(null);
+    navigate('/login');
+  };
 
   const adminTabs = ['music', 'reviews', 'users'];
   const userTabs = ['reviews', 'comments'];
@@ -202,6 +204,13 @@ const Profile = () => {
             return null;
           })}
         </ul>
+        {data.length === 0 && (
+          <p className="empty-message">
+            {activeTab === 'reviews' && 'No reviews posted.'}
+            {activeTab === 'comments' && 'No comments posted.'}
+            {activeTab === 'users' && 'No users to display.'}
+          </p>
+        )}
     </div>
   );
 };

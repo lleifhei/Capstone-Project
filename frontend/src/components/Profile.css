@@ -266,4 +266,10 @@
   .profile-image-buttons button[type="button"]:hover {
     background-color: #999;
   }
+  .empty-message {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+    margin: 1rem 0;
+  }
   

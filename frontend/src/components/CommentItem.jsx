@@ -9,6 +9,10 @@ const CommentItem = ({ comment, currentUserId, token, fetchComments }) => {
     const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
+      setEditContent(comment.content);
+    }, [comment.content]);
+
+    useEffect(() => {
         if (!comment?.user_id) return;
         axios.get(`${apiUrl}/api/auth/${comment.user_id}`).then(res => setUser(res.data[0])).catch(err => console.error(`Error fetching user for ${comment.user_id}`, err))
     }, [comment.user_id])
