@@ -3,6 +3,7 @@ import './Review.css';
 import ReviewItem from './ReviewItem';
 import { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Review = ({ reviews, album, token, fetchReviews }) => {
     const [ showDuplicateWarning, setShowDuplicateWarning] = useState(false);
@@ -67,10 +68,11 @@ const Review = ({ reviews, album, token, fetchReviews }) => {
                 <h3>Please Log In</h3>
                 <p>You must be logged in to write a review.</p>
                 <div className="modal-buttons">
-                    <button className='login-button' onClick={() => window.location.href = '/login'}>
-                    Go to Login
+                <button className="login-button">
+                        <Link to="/login">Go to Login</Link>
                     </button>
                     <button className="cancel" onClick={() => setShowLoginPrompt(false)}>
+                    
                     Cancel
                     </button>
                 </div>
