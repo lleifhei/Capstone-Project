@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import {jwtDecode} from "jwt-decode";
 import './Profile.css';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const token = localStorage.getItem('token');
@@ -56,7 +57,7 @@ const Profile = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user_id'); 
-    window.location.href = '/login'; 
+    <Link to="/login" />
   };  
 
   const adminTabs = ['music', 'reviews', 'users'];
